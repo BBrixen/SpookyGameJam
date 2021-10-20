@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class GameCharacter extends Actor {
 
-    Texture texture = new Texture(Gdx.files.internal("cat2.png"));
-    Sprite characterSprite = new Sprite(texture);
+    Texture texture;
+    Sprite characterSprite;
     OrthographicCamera camera;
     float positionX, positionY, speedX, speedY;
 
@@ -19,6 +19,10 @@ public class GameCharacter extends Actor {
         positionY = 0;
         speedX = 0;
         speedY = 0;
+
+        texture = new Texture(Gdx.files.internal("cat2.png"));
+        characterSprite = new Sprite(texture);
+        characterSprite.setScale(2.5f);
     }
 
     public GameCharacter(OrthographicCamera camera) {
@@ -46,5 +50,21 @@ public class GameCharacter extends Actor {
 
     public void setSpeedY(float speedY) {
         this.speedY = speedY;
+    }
+
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
+
+    public float getPositionX() {
+        return positionX;
+    }
+
+    public float getSpeedX() {
+        return speedX;
     }
 }
