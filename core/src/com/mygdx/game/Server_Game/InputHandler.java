@@ -13,12 +13,12 @@ public class InputHandler {
     // server side
     // handles the input from an actor
 
-    public static final float defaultSpeed = 14.0f;
+    public static final float defaultSpeed = 64.0f;
     public static final float diagonalMultiplier =
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;
 
-    public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData) {
+    public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData, boolean multiplayer) {
         if (p == null) return;
         if (keyPresses == null) initKeyPresses();
         if (!isKeyChange()) return;
@@ -41,10 +41,12 @@ public class InputHandler {
 
         p.setSpeedX(deltaX);
         p.setSpeedY(deltaY);
-        try {
-            sender.sendData(new NetworkData(gameData));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (multiplayer) {
+            try {
+                sender.sendData(new NetworkData(gameData));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
