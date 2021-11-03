@@ -38,6 +38,7 @@ public class ClientGame extends ApplicationAdapter {
 	private Player thisPlayer;
 
 	// multiplayer stuff
+	private boolean multiplayer = false;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
@@ -45,12 +46,17 @@ public class ClientGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		// creating network connection
-		try {
-			clientNetworker = new ClientNetworker(this);
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-			return;
+		if (multiplayer) {
+			// creating network connection
+			try {
+				clientNetworker = new ClientNetworker(this);
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			currentGameData = new GameData(1);
+			currentGameData.players.add(new Player(0));
 		}
 
 		// making camera
@@ -87,6 +93,8 @@ public class ClientGame extends ApplicationAdapter {
 		if (pID == -1) pID = numPlayers - 1;
 		thisPlayer = players.get(pID);
 
+		if (! this.currentGameData.allPlayersConnected()) return;
+
 		if (previousLength != numPlayers) {
 			previousLength = numPlayers;
 			// there has been a new player added, time to add things to the sprite list
@@ -120,9 +128,10 @@ public class ClientGame extends ApplicationAdapter {
 		// reseting background
 		ScreenUtils.clear(90/255f, 230/255f, 80/255f, 1);
 
-		// handling inputs
-		InputHandler.handleKeyDown(thisPlayer,
-				clientNetworker, currentGameData);
+		if (this.currentGameData != null && this.currentGameData.allPlayersConnected())
+			// handling inputs
+			InputHandler.handleKeyDown(thisPlayer,
+					clientNetworker, currentGameData, multiplayer);
 
 		// rendering stuff
 		batch.setProjectionMatrix(camera.combined);

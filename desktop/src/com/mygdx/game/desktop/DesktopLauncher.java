@@ -4,13 +4,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.Client_Display.ClientGame;
 
-// hey guys
-//hey lydia
-//test
-//123
 public class DesktopLauncher {
+
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.foregroundFPS = 60;
 //		config.height = 1080;
 //		config.width = 1920;
 		new LwjglApplication(new ClientGame(), config);

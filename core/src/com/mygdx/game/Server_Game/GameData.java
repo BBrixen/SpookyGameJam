@@ -13,4 +13,8 @@ public class GameData implements Serializable {
         this.maxPlayers = maxPlayers;
         this.players = new ArrayList<>();
     }
+
+    public boolean allPlayersConnected() {
+        return players.size() == maxPlayers;
+    }
 }
