@@ -26,7 +26,7 @@ public class ServerNetworker {
         sockets = new HashMap<>();
         queue = new LinkedList<>();
         isSending = false;
-        this.game = new ServerGame(this, number_of_clients);
+        this.game = new ServerGame(this, number_of_clients, false);
 
         System.out.println("Starting Server");
         serverSocket = new ServerSocket(7777);
