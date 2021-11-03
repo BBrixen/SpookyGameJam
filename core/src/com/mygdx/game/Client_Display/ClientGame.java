@@ -15,6 +15,7 @@ import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Server_Game.InputHandler;
 import com.mygdx.game.Server_Game.Player;
+import com.mygdx.game.Server_Game.ServerGame;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,8 +56,9 @@ public class ClientGame extends ApplicationAdapter {
 				return;
 			}
 		} else {
-			currentGameData = new GameData(1);
-			currentGameData.players.add(new Player(0));
+			ServerGame game = new ServerGame(null, 1, false);
+			currentGameData = game.gameData;
+			game.playerJoins(new Player(0));
 		}
 
 		// making camera
@@ -112,6 +114,7 @@ public class ClientGame extends ApplicationAdapter {
 
 		// update the position of each sprite
 		for (Player curPlayer : players) {
+			if (curPlayer.getId() == pID) continue; // dont affect current player bc the server gets all confused
 			GameCharacter sprite = playerToSprite.get(curPlayer.getId());
 			sprite.setSpeedX(curPlayer.getSpeedX());
 			sprite.setSpeedY(curPlayer.getSpeedY());
@@ -130,8 +133,8 @@ public class ClientGame extends ApplicationAdapter {
 
 		if (this.currentGameData != null && this.currentGameData.allPlayersConnected())
 			// handling inputs
-			InputHandler.handleKeyDown(thisPlayer,
-					clientNetworker, currentGameData, multiplayer);
+			InputHandler.handleKeyDown(thisPlayer, clientNetworker, currentGameData,
+					multiplayer, character);
 
 		// rendering stuff
 		batch.setProjectionMatrix(camera.combined);
