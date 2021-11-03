@@ -1,5 +1,6 @@
 package com.mygdx.game.Server_Game;
 
+import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Server_Data.NetworkData;
 import com.mygdx.game.Networking.Server_Data.ServerNetworker;
 
@@ -22,8 +23,8 @@ public class ServerGame {
 
         if (this.gameData.players.size() == this.gameData.maxPlayers) {
             System.out.println("all clients connected");
-            // make map here
 
+            // make map here
             if (multiplayer) { // send out data to all clients
                 server.continuallyRecieveData();
                 server.addToQueueAndSend(new NetworkData(gameData));
