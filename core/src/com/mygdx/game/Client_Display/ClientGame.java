@@ -16,7 +16,6 @@ import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Server_Game.InputHandler;
 import com.mygdx.game.Server_Game.Player;
 import com.mygdx.game.Server_Game.ServerGame;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +38,7 @@ public class ClientGame extends ApplicationAdapter {
 	private Player thisPlayer;
 
 	// multiplayer stuff
-	private boolean multiplayer = false;
+	private final boolean multiplayer = false;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
@@ -118,6 +117,10 @@ public class ClientGame extends ApplicationAdapter {
 			GameCharacter sprite = playerToSprite.get(curPlayer.getId());
 			sprite.setSpeedX(curPlayer.getSpeedX());
 			sprite.setSpeedY(curPlayer.getSpeedY());
+			if (curPlayer.getSpeedX() == 0 && curPlayer.getSpeedY() == 0) {
+				sprite.setPositionX(curPlayer.getX());
+				sprite.setPositionY(curPlayer.getY());
+			}
 
 			playerToSprite.replace(curPlayer.getId(), sprite);
 		}
@@ -131,9 +134,8 @@ public class ClientGame extends ApplicationAdapter {
 		// reseting background
 		ScreenUtils.clear(90/255f, 230/255f, 80/255f, 1);
 
-		if (this.currentGameData != null && this.currentGameData.allPlayersConnected())
-			// handling inputs
-			InputHandler.handleKeyDown(thisPlayer, clientNetworker, currentGameData,
+		// handling inputs
+		InputHandler.handleKeyDown(thisPlayer, clientNetworker, currentGameData,
 					multiplayer, character);
 
 		// rendering stuff

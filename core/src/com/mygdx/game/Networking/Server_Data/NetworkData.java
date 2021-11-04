@@ -7,24 +7,24 @@ import java.io.Serializable;
 
 public class NetworkData implements Serializable {
 
-    private GameData data;
+    private GameData gameData;
 
     public NetworkData(GameData data) {
-        this.data = data;
+        this.gameData = data;
     }
 
-    public GameData getData() {
-        return data;
+    public GameData getGameData() {
+        return gameData;
     }
 
-    public void setData(GameData data) {
-        this.data = data;
+    public void setGameData(GameData data) {
+        this.gameData = data;
     }
 
 
     @Override
     public String toString() {
-        return "" + data;
+        return "" + gameData;
     }
 }
 

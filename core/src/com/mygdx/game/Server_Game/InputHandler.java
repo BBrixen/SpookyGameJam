@@ -19,7 +19,9 @@ public class InputHandler {
 
     public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData,
                                      boolean multiplayer, GameCharacter character) {
+        // checks and initializing keypresses
         if (p == null) return;
+        if (gameData == null || !gameData.allPlayersConnected()) return;
         if (keyPresses == null) initKeyPresses();
         if (!isKeyChange()) return;
 
@@ -41,10 +43,14 @@ public class InputHandler {
 
         p.setSpeedX(deltaX);
         p.setSpeedY(deltaY);
+        p.setX(character.getPositionX());
+        p.setY(character.getPositionY());
         character.setSpeedX(deltaX);
         character.setSpeedY(deltaY);
         if (multiplayer) {
             try {
+                System.out.println("sending data from pID " + p.getId());
+                System.out.println(gameData.players.get(0).getSpeedX());
                 sender.sendData(new NetworkData(gameData));
             } catch (IOException e) {
                 e.printStackTrace();

@@ -20,6 +20,7 @@ public class ServerGame {
 
     public void playerJoins(Player player) {
         this.gameData.players.add(player);
+        if (multiplayer) server.continuallySendData();
 
         if (this.gameData.players.size() == this.gameData.maxPlayers) {
             System.out.println("all clients connected");
@@ -27,12 +28,9 @@ public class ServerGame {
             // make map here
             if (multiplayer) { // send out data to all clients
                 server.continuallyRecieveData();
-                server.addToQueueAndSend(new NetworkData(gameData));
             }
             // begin the game
             mainLoop();
-        } else {
-            server.addToQueueAndSend(new NetworkData(gameData));
         }
     }
 

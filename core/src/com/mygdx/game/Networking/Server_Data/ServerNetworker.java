@@ -1,6 +1,7 @@
 package com.mygdx.game.Networking.Server_Data;
 
 
+import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Server_Game.Player;
 import com.mygdx.game.Server_Game.ServerGame;
 
@@ -12,21 +13,22 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ServerNetworker {
 
     private ServerSocket serverSocket;
     private HashMap<Socket, Player> sockets;
-    private Queue<NetworkData> queue;
-    private boolean isSending;
+    private boolean isSending, alreadySending;
     private ServerGame game;
     private int pID = 0;
     
     public ServerNetworker(int number_of_clients) throws IOException{
         sockets = new HashMap<>();
-        queue = new LinkedList<>();
         isSending = false;
-        this.game = new ServerGame(this, number_of_clients, false);
+        this.game = new ServerGame(this, number_of_clients, true);
 
         System.out.println("Starting Server");
         serverSocket = new ServerSocket(7777);
@@ -112,6 +114,25 @@ public class ServerNetworker {
         }
     }
 
+    public void continuallySendData() {
+        if (alreadySending) return;
+        alreadySending = true;
+        final ServerGame game = this.game;
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                isSending = true;
+                System.out.println("sending out data");
+                System.out.println(game.gameData.players.get(0).getSpeedX());
+                try {
+                    sendDataToOtherClients(new NetworkData(game.gameData));
+                } catch (IOException e) { e.printStackTrace(); }
+                isSending = false;
+            }
+        }, 0, 50, TimeUnit.MILLISECONDS);
+    }
+
     public void continuallyRecieveDataFromClient(Socket client_socket) {
         final Socket finalClientSocket = client_socket;
         //thread the receiving data code so that it can run at the same time as the send data
@@ -124,14 +145,13 @@ public class ServerNetworker {
                         NetworkData data = receiveData(finalClientSocket);
                         handleIncomingData(data);
 
-                    } catch (IOException | ClassNotFoundException e) {
+                    } catch (IOException | ClassNotFoundException | InterruptedException e) {
                         System.out.println(finalClientSocket + " disconnected");
                         sockets.remove(finalClientSocket);
 
                         // leave message
                         // remove the player from the gamedata
                         NetworkData message = new NetworkData(null);
-                        addToQueueAndSend(message);
 
                         return;
                     }
@@ -141,35 +161,14 @@ public class ServerNetworker {
         thread.start();
     }
 
-    public void startSendingQueuedData() {
-        this.isSending = true;
-
-        while (!this.queue.isEmpty()) {
-            try {
-                NetworkData data = this.queue.remove();
-                sendDataToOtherClients(data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void handleIncomingData(NetworkData data) throws InterruptedException {
+        if (isSending) {
+            Thread.sleep(5);
         }
-
-        this.isSending = false;
-    }
-
-    public void handleIncomingData(NetworkData data) {
-        System.out.println(data);
-        System.out.println("the number of clients is " + this.sockets.size());
+        this.game.gameData = data.getGameData();
+        System.out.println("GAME UPDATED WITH NEW DATA: " + game.gameData.players.get(0).getSpeedX());
         // this will just call game functions, and the game will call
         // addToQueueAndSend when it is finished and ready to update the players
-        addToQueueAndSend(data);
-    }
-
-    public void addToQueueAndSend(NetworkData data) {
-        queue.add(data);
-
-        if (! isSending){
-            startSendingQueuedData();
-        }
     }
 }
 

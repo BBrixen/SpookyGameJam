@@ -54,7 +54,7 @@ public class ClientNetworker {
                 while (true) {
                     try {
                         NetworkData data = receiveData();
-                        game.updateGameData(data.getData());
+                        game.updateGameData(data.getGameData());
                         // depending on the data recieved, we may need to update the display, or bring up a pop up menu for the user to interact with
 //                        display.update(data);
                     } catch (IOException | ClassNotFoundException e) {

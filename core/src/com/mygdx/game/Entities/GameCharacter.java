@@ -64,6 +64,10 @@ public class GameCharacter extends Actor {
         return positionX;
     }
 
+    public float getPositionY() {
+        return positionY;
+    }
+
     public float getSpeedX() {
         return speedX;
     }
