@@ -28,6 +28,7 @@ public class ServerGame {
             // make map here
             map = new Map();
             map.virus(1f,0.00001f,'f');
+            map.rockSummon(20);
 
             if (multiplayer) { // send out data to all clients
                 server.continuallyRecieveData();
