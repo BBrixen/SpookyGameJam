@@ -11,6 +11,7 @@ public class ServerGame {
     public GameData gameData;
     private ServerNetworker server;
     private boolean multiplayer;
+    private Map map;
 
     public ServerGame(ServerNetworker server, int maxPlayers, boolean multiplayer) {
         gameData = new GameData(maxPlayers);
@@ -25,6 +26,9 @@ public class ServerGame {
             System.out.println("all clients connected");
 
             // make map here
+            map = new Map();
+            map.virus(1f,0.00001f,'f');
+
             if (multiplayer) { // send out data to all clients
                 server.continuallyRecieveData();
                 server.addToQueueAndSend(new NetworkData(gameData));
