@@ -1,23 +1,36 @@
 package com.mygdx.game.Map;
 
 import javafx.util.Pair;
-
-import java.util.*;
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Random;
 
 public class Map {
-    public List<List<Character>> SML;
-    public Map() {
+
+    private List<List<Character>> SML;
+    private final Random random;
+
+    public Map(long seed) {
         //makes the map 1500 by 1500 char wide
         SML = new ArrayList<>();
+        random = new Random(seed);
+
         for (int i = 0; i < 1500; i++) {
-            List<Character> eachLineList = new ArrayList<Character>();
+            List<Character> eachLineList = new ArrayList<>();
             for (int j = 0; j < 1500; j++) {
                 eachLineList.add('g');
             }
             SML.add(eachLineList);
         }
+        virus(1f,0.00001f,'f');
+        rockSummon(20);
     }
+
     public void virus(float spreadRate, float decayRate, char infectionType) {
         //runs the infection i times
 
@@ -26,8 +39,8 @@ public class Map {
             Set<Pair<Integer, Integer>> usedSpaces = new HashSet<>();
 
             //gets random start point
-            int x = (int)Math.round(Math.random() * 1500);
-            int y = (int)Math.round(Math.random() * 1500);
+            int x = Math.round(random.nextFloat() * 1500);
+            int y = Math.round(random.nextFloat() * 1500);
             theCurrentQueue.add(new Pair<>(x, y));
 
             while (! theCurrentQueue.isEmpty()) {
@@ -36,7 +49,7 @@ public class Map {
                 y = currentCoords.getValue();
 
                 //checks queue item to see if it becomes a forest, then adds its neighbours
-                if (Math.random() < spreadRate) {
+                if (random.nextFloat() < spreadRate) {
                     SML.get(x).set(y,infectionType);
 
                     if (0 < x && x < 1499 && 0 < y && y < 1499) {
@@ -71,9 +84,7 @@ public class Map {
         for (int i = 0; i < 1500; i++) {
             for (int j = 0; j < 1500; j++) {
                 char current = SML.get(i).get(j);
-                if (current == 'f') {
-                    count++;
-                }
+                if (current == 'f') count++;
             }
         }
         System.out.println("there are " + count + " forest tiles spawned");
@@ -82,12 +93,13 @@ public class Map {
     public void rockSummon(int quantity) {
         for (int i = 0; i < quantity; i++) {
             //Determines coords and boulder size
-            int rockSize = (int)Math.round(Math.random() * 25);
-            int x = (int)Math.round(Math.random() * 1500);
-            int y = (int)Math.round(Math.random() * 1500);
+            int rockSize = Math.round(random.nextFloat() * 25);
+            int x = Math.round(random.nextFloat() * 1500);
+            int y = Math.round(random.nextFloat() * 1500);
+
             int initialX = x;
             int initialY = y;
-            int innerSize = (int)rockSize/2;
+            int innerSize = rockSize /2;
 
             //Checks bounds and if good
             if (x > 25 && x < 1475 && y > 25 && y < 1475) {
@@ -100,7 +112,7 @@ public class Map {
                 //adds some lingering small rocks around the big boulder
                 for (int j = -innerSize; j < rockSize; j++) {
                     for (int k = -innerSize; k < rockSize; k++) {
-                        if (Math.random() > 0.25) {
+                        if (random.nextFloat() > 0.25) {
                             SML.get(x+j).set(y+k, 'c');
                         }
                     }
@@ -113,9 +125,7 @@ public class Map {
         for (int i = 0; i < 1500; i++) {
             for (int j = 0; j < 1500; j++) {
                 char current = SML.get(i).get(j);
-                if (current == 'c') {
-                    count++;
-                }
+                if (current == 'c') count++;
             }
         }
         System.out.println("there are " + count + " rock tiles");

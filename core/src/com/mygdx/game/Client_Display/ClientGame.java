@@ -158,7 +158,7 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void updateGameData(GameData gameData) {
 		this.currentGameData = gameData;
-		this.map = new Map();
+		this.map = new Map(gameData.seed);
 	}
 
 }
