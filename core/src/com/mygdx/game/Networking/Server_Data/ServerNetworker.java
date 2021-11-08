@@ -21,7 +21,7 @@ public class ServerNetworker {
 
     private ServerSocket serverSocket;
     private HashMap<Socket, Player> sockets;
-    private boolean isSending, alreadySending;
+    public boolean isSending, alreadySending;
     private ServerGame game;
     private int pID = 0;
     
@@ -74,12 +74,6 @@ public class ServerNetworker {
     }
 
     public void sendData(NetworkData data, Socket recipient) throws IOException {
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         ObjectOutputStream out = new ObjectOutputStream(recipient.getOutputStream());
         out.reset(); // cleaning before
 
@@ -88,12 +82,6 @@ public class ServerNetworker {
 
         // cleaning afterwards
         out.flush();
-
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public NetworkData receiveData(Socket socket) throws IOException, ClassNotFoundException {
@@ -123,14 +111,12 @@ public class ServerNetworker {
             @Override
             public void run() {
                 isSending = true;
-                System.out.println("sending out data");
-                System.out.println(game.gameData.players.get(0).getSpeedX());
                 try {
                     sendDataToOtherClients(new NetworkData(game.gameData));
                 } catch (IOException e) { e.printStackTrace(); }
                 isSending = false;
             }
-        }, 0, 50, TimeUnit.MILLISECONDS);
+        }, 0, 100, TimeUnit.MILLISECONDS);
     }
 
     public void continuallyRecieveDataFromClient(Socket client_socket) {
@@ -151,7 +137,7 @@ public class ServerNetworker {
 
                         // leave message
                         // remove the player from the gamedata
-                        NetworkData message = new NetworkData(null);
+                        NetworkData message = new NetworkData(new GameData(0));
 
                         return;
                     }
@@ -163,7 +149,7 @@ public class ServerNetworker {
 
     public void handleIncomingData(NetworkData data) throws InterruptedException {
         if (isSending) {
-            Thread.sleep(5);
+            Thread.sleep(20);
         }
         this.game.gameData = data.getGameData();
         System.out.println("GAME UPDATED WITH NEW DATA: " + game.gameData.players.get(0).getSpeedX());

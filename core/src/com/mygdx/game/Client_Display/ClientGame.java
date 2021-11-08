@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Entities.GameCharacter;
+import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Server_Game.InputHandler;
@@ -36,9 +37,10 @@ public class ClientGame extends ApplicationAdapter {
 	private Music nightMusic;
 	private float w, h;
 	private Player thisPlayer;
+	private Map map;
 
 	// multiplayer stuff
-	private final boolean multiplayer = false;
+	private final boolean multiplayer = true;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
@@ -58,6 +60,7 @@ public class ClientGame extends ApplicationAdapter {
 			ServerGame game = new ServerGame(null, 1, false);
 			currentGameData = game.gameData;
 			game.playerJoins(new Player(0));
+			this.map = game.map;
 		}
 
 		// making camera
@@ -88,6 +91,7 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void interpretGameData() {
 		if (this.currentGameData == null) return;
+		if (this.map != null) System.out.println("has map");
 		List<Player> players = currentGameData.players;
 		int numPlayers = players.size();
 
@@ -155,6 +159,10 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void updateGameData(GameData gameData) {
 		this.currentGameData = gameData;
+	}
+
+	public void receiveMap(Map map) {
+		this.map = map;
 	}
 
 }

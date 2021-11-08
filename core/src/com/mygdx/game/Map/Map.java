@@ -2,13 +2,14 @@ package com.mygdx.game.Map;
 
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.lang.Math;
 
-public class Map {
+public class Map implements Serializable {
     public List<List<Character>> SML;
     public Map() {
         SML = new ArrayList<>();
