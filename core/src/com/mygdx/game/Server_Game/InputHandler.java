@@ -49,8 +49,6 @@ public class InputHandler {
         character.setSpeedY(deltaY);
         if (multiplayer) {
             try {
-                System.out.println("sending data from pID " + p.getId());
-                System.out.println(gameData.players.get(0).getSpeedX());
                 sender.sendData(new NetworkData(gameData));
             } catch (IOException e) {
                 e.printStackTrace();

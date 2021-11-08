@@ -63,9 +63,6 @@ public class ServerNetworker {
         //it does nothing but without it everything breaks, idk why
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
-//        sending connected message to socket
-//        sendData(new NetworkData(null, null), socket);
-
         // add player to game after everything is established
         Player p = new Player(pID);
         sockets.put(socket, p);

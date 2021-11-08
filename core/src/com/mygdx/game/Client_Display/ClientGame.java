@@ -91,7 +91,6 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void interpretGameData() {
 		if (this.currentGameData == null) return;
-		if (this.map != null) System.out.println("has map");
 		List<Player> players = currentGameData.players;
 		int numPlayers = players.size();
 
@@ -159,10 +158,7 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void updateGameData(GameData gameData) {
 		this.currentGameData = gameData;
-	}
-
-	public void receiveMap(Map map) {
-		this.map = map;
+		this.map = new Map();
 	}
 
 }

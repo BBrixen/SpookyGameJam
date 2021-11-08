@@ -56,9 +56,7 @@ public class ClientNetworker {
                 while (true) {
                     try {
                         NetworkData data = receiveData();
-                        Map map = data.getMap();
                         game.updateGameData(data.getGameData());
-                        if (map != null) game.receiveMap(map);
 
                         // depending on the data recieved, we may need to update the display, or bring up a pop up menu for the user to interact with
 //                        display.update(data);

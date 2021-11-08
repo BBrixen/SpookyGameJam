@@ -1,11 +1,7 @@
 package com.mygdx.game.Server_Game;
 
 import com.mygdx.game.Map.Map;
-import com.mygdx.game.Networking.Server_Data.NetworkData;
 import com.mygdx.game.Networking.Server_Data.ServerNetworker;
-
-import java.io.IOException;
-
 
 public class ServerGame {
 
@@ -28,17 +24,7 @@ public class ServerGame {
             System.out.println("all clients connected");
 
             this.map = new Map();
-            if (multiplayer) { // send out data to all clients
-                try {
-                    if (server.isSending) Thread.sleep(20);
-                    System.out.println("about to send out the map");
-//                    server.sendDataToOtherClients(new NetworkData(this.gameData, this.map));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("sent the map");
-                server.continuallyRecieveData();
-            }
+            if (multiplayer) server.continuallyRecieveData();
             // begin the game
             mainLoop();
         }
