@@ -69,10 +69,15 @@ public class Map {
         }
         int count = 0;
         for (int i = 0; i < 1500; i++) {
+            boolean printed_line = false;
             for (int j = 0; j < 1500; j++) {
                 char current = SML.get(i).get(j);
                 if (current == 'f') {
                     count++;
+                    if (printed_line != true) {
+                        System.out.println(SML.get(i));
+                        printed_line = true;
+                    }
                 }
             }
         }
