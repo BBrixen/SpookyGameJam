@@ -12,123 +12,103 @@ import java.util.Random;
 
 public class Map {
 
-    private List<List<Character>> SML;
+    public List<List<Character>> SML;
     private final Random random;
+    public final int size = 500;
 
     public Map(long seed) {
-        //makes the map 1500 by 1500 char wide
+        //makes the map size by size char wide
         SML = new ArrayList<>();
         random = new Random(seed);
 
-        for (int i = 0; i < 1500; i++) {
+        for (int i = 0; i < size; i++) {
             List<Character> eachLineList = new ArrayList<>();
-            for (int j = 0; j < 1500; j++) {
+            for (int j = 0; j < size; j++) {
                 eachLineList.add('g');
             }
             SML.add(eachLineList);
         }
-        virus(1f,0.00001f,'f');
-        rockSummon(20);
+        virus(20, 1f,0.01f,'f');
+        rockSummon(50);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                System.out.print(SML.get(i).get(j));
+            }
+            System.out.println();
+        }
     }
 
-    public void virus(float spreadRate, float decayRate, char infectionType) {
-        //runs the infection i times
-
-        for (int i = 0; i < 10; i++) {
-            Queue<Pair<Integer,Integer>> theCurrentQueue= new LinkedList<>();
+    public void virus(int quantity, float spreadRate, float decayRate, char infectionType) {
+        for (int i = 0; i < quantity; i++) {
+            Queue<Pair<Integer, Integer>> theCurrentQueue = new LinkedList<>();
             Set<Pair<Integer, Integer>> usedSpaces = new HashSet<>();
 
             //gets random start point
-            int x = Math.round(random.nextFloat() * 1500);
-            int y = Math.round(random.nextFloat() * 1500);
-            theCurrentQueue.add(new Pair<>(x, y));
+            int startingX = Math.round(random.nextFloat() * (size-2));
+            int startingY = Math.round(random.nextFloat() * (size-2));
+            theCurrentQueue.add(new Pair<>(startingX, startingY));
 
-            while (! theCurrentQueue.isEmpty()) {
+            while (!theCurrentQueue.isEmpty()) {
                 Pair<Integer, Integer> currentCoords = theCurrentQueue.remove();
-                x = currentCoords.getKey();
-                y = currentCoords.getValue();
+                int x = currentCoords.getKey();
+                int y = currentCoords.getValue();
 
                 //checks queue item to see if it becomes a forest, then adds its neighbours
-                if (random.nextFloat() < spreadRate) {
-                    SML.get(x).set(y,infectionType);
+                float distXSquared = (startingX - x) * (startingX - x);
+                float distYSquared = (startingY - y) * (startingY - y);
+                float threshold = (float) (spreadRate - decayRate * Math.sqrt(distXSquared + distYSquared));
+                if (random.nextFloat() >= threshold) continue; // guard clause to not make it a forest
 
-                    if (0 < x && x < 1499 && 0 < y && y < 1499) {
-                        Pair<Integer, Integer> p1 = new Pair<>(x+1, y);
-                        Pair<Integer, Integer> p2 = new Pair<>(x, y+1);
-                        Pair<Integer, Integer> p3 = new Pair<>(x-1, y);
-                        Pair<Integer, Integer> p4 = new Pair<>(x, y-1);
+                SML.get(y).set(x, infectionType);
 
-                        if (! usedSpaces.contains(p1)) {
-                            theCurrentQueue.add(p1);
-                            usedSpaces.add(p1);
-                        }
-                        if (! usedSpaces.contains(p2)) {
-                            theCurrentQueue.add(p2);
-                            usedSpaces.add(p2);
-                        }
-                        if (! usedSpaces.contains(p3)) {
-                            theCurrentQueue.add(p3);
-                            usedSpaces.add(p3);
-                        }
-                        if (! usedSpaces.contains(p4)) {
-                            theCurrentQueue.add(p4);
-                            usedSpaces.add(p4);
-                        }
+                // the way this is currently set up, the forests cannot move in if they are on the edges
+                // i think its fine this was
+                if (0 >= x || x > size-2 || 0 >= y || y > size-2) continue;
+                Pair<Integer, Integer> p1 = new Pair<>(x + 1, y);
+                Pair<Integer, Integer> p2 = new Pair<>(x, y + 1);
+                Pair<Integer, Integer> p3 = new Pair<>(x - 1, y);
+                Pair<Integer, Integer> p4 = new Pair<>(x, y - 1);
 
-                    }
-                }
-                spreadRate -= decayRate;
+                if (!usedSpaces.contains(p1)) theCurrentQueue.add(p1);
+                if (!usedSpaces.contains(p2)) theCurrentQueue.add(p2);
+                if (!usedSpaces.contains(p3)) theCurrentQueue.add(p3);
+                if (!usedSpaces.contains(p4)) theCurrentQueue.add(p4);
+
+                usedSpaces.add(p1);
+                usedSpaces.add(p2);
+                usedSpaces.add(p3);
+                usedSpaces.add(p4);
             }
         }
-        int count = 0;
-        for (int i = 0; i < 1500; i++) {
-            for (int j = 0; j < 1500; j++) {
-                char current = SML.get(i).get(j);
-                if (current == 'f') count++;
-            }
-        }
-        System.out.println("there are " + count + " forest tiles spawned");
     }
 
     public void rockSummon(int quantity) {
         for (int i = 0; i < quantity; i++) {
             //Determines coords and boulder size
             int rockSize = Math.round(random.nextFloat() * 25);
-            int x = Math.round(random.nextFloat() * 1500);
-            int y = Math.round(random.nextFloat() * 1500);
+            int x = Math.round(random.nextFloat() * size);
+            int y = Math.round(random.nextFloat() * size);
 
-            int initialX = x;
-            int initialY = y;
             int innerSize = rockSize /2;
 
             //Checks bounds and if good
-            if (x > 25 && x < 1475 && y > 25 && y < 1475) {
+            if (x > 25 && x < size - 25 && y > 25 && y < size - 25) {
                 //adds a solid middle of boulder
                 for (int j = 0; j < innerSize; j++) {
                     for (int k = 0; k < innerSize; k++) {
-                        SML.get(x+j).set(y+k, 'c');
+                        SML.get(y+j).set(x+k, 'c');
                     }
                 }
                 //adds some lingering small rocks around the big boulder
                 for (int j = -innerSize; j < rockSize; j++) {
                     for (int k = -innerSize; k < rockSize; k++) {
                         if (random.nextFloat() > 0.25) {
-                            SML.get(x+j).set(y+k, 'c');
+                            SML.get(y+j).set(x+k, 'c');
                         }
                     }
                 }
             }
         }
-
-        //Quick rock count:
-        int count = 0;
-        for (int i = 0; i < 1500; i++) {
-            for (int j = 0; j < 1500; j++) {
-                char current = SML.get(i).get(j);
-                if (current == 'c') count++;
-            }
-        }
-        System.out.println("there are " + count + " rock tiles");
     }
 }
 

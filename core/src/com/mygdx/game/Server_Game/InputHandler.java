@@ -12,7 +12,7 @@ public class InputHandler {
     // server side
     // handles the input from an actor
 
-    public static final float defaultSpeed = 64.0f;
+    public static final float defaultSpeed = 2*64.0f;
     public static final float diagonalMultiplier =
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;

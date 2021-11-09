@@ -28,7 +28,6 @@ public class ClientGame extends ApplicationAdapter {
 
 	// rendering stuff
 	private SpriteBatch batch;
-	private Texture background;
 	private Sprite backgroundSprite;
 	private OrthographicCamera camera;
 	private Stage stage;
@@ -40,7 +39,7 @@ public class ClientGame extends ApplicationAdapter {
 	private Map map;
 
 	// multiplayer stuff
-	private final boolean multiplayer = true;
+	private final boolean multiplayer = false;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
@@ -48,21 +47,6 @@ public class ClientGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		if (multiplayer) {
-			// creating network connection
-			try {
-				clientNetworker = new ClientNetworker(this);
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			ServerGame game = new ServerGame(null, 1, false);
-			currentGameData = game.gameData;
-			game.playerJoins(new Player(0));
-			this.map = game.map;
-		}
-
 		// making camera
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
@@ -84,9 +68,19 @@ public class ClientGame extends ApplicationAdapter {
 		// TURNED OFF FOR TESTING
 //		nightMusic.play();
 
-		// background
-		background = new Texture(Gdx.files.internal("badlogic.jpg"));
-		backgroundSprite = new Sprite(background);
+		if (multiplayer) {
+			// creating network connection
+			try {
+				clientNetworker = new ClientNetworker(this);
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			ServerGame game = new ServerGame(null, 1, false);
+			currentGameData = game.gameData;
+			game.playerJoins(new Player(0));
+			this.map = game.map;
+		}
 	}
 
 	public void interpretGameData() {
@@ -144,10 +138,39 @@ public class ClientGame extends ApplicationAdapter {
 		// rendering stuff
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(background, 0,0, w, h);
+		renderMap();
 		stage.act(Gdx.graphics.getDeltaTime());
 		batch.end();
 		stage.draw();
+	}
+
+	public void renderMap() {
+		if (this.map == null) return;
+		Texture grass = new Texture(Gdx.files.internal("grass.png"));
+		Texture dirt = new Texture(Gdx.files.internal("dirt.png"));
+		Texture cobble = new Texture(Gdx.files.internal("cobble.png"));
+		Texture tree = new Texture(Gdx.files.internal("tree.png"));
+
+		int row = (int) (character.getPositionX()/64) + (this.map.size/2);
+		int col = (int) (character.getPositionY()/64) + (this.map.size/2);
+
+		for (int r = row - 20; r < row + 20 && r < this.map.size; r ++) {
+			if (r < 0) continue;
+			for (int c = col - 20; c < col + 20 && c < this.map.size; c ++) {
+				if (c < 0) continue;
+				char type = this.map.SML.get(r).get(c);
+				float x = (r - this.map.size/2) * 64;
+				float y = (c - this.map.size/2) * 64;
+
+				Texture tile = dirt; // the default for now
+				if (type == 'g') tile = grass;
+				if (type == 'f') tile = tree;
+				if (type == 'c') tile = cobble;
+				Sprite s = new Sprite(tile);
+				s.setPosition(x, y);
+				s.draw(batch);
+			}
+		}
 	}
 	
 	@Override
@@ -158,7 +181,6 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void updateGameData(GameData gameData) {
 		this.currentGameData = gameData;
-		this.map = new Map(gameData.seed);
+		if (this.map == null) this.map = new Map(gameData.seed);
 	}
-
 }
