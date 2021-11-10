@@ -24,18 +24,13 @@ public class Map {
         for (int i = 0; i < size; i++) {
             List<Character> eachLineList = new ArrayList<>();
             for (int j = 0; j < size; j++) {
-                eachLineList.add('g');
+                eachLineList.add('d');
             }
             SML.add(eachLineList);
         }
-        virus(20, 1f,0.01f,'f');
-        rockSummon(50);
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                System.out.print(SML.get(i).get(j));
-            }
-            System.out.println();
-        }
+        virus(10, 1f,0.005f,'g');
+        virus(10, 1f,0.01f,'f');
+        virus(20, 1f,0.1f,'c');
     }
 
     public void virus(int quantity, float spreadRate, float decayRate, char infectionType) {
@@ -54,9 +49,9 @@ public class Map {
                 int y = currentCoords.getValue();
 
                 //checks queue item to see if it becomes a forest, then adds its neighbours
-                float distXSquared = (startingX - x) * (startingX - x);
-                float distYSquared = (startingY - y) * (startingY - y);
-                float threshold = (float) (spreadRate - decayRate * Math.sqrt(distXSquared + distYSquared));
+                float distX = Math.abs(startingX - x);
+                float distY = Math.abs(startingY - y);
+                float threshold = (float) (spreadRate - decayRate * (distX + distY));
                 if (random.nextFloat() >= threshold) continue; // guard clause to not make it a forest
 
                 SML.get(y).set(x, infectionType);
@@ -81,34 +76,4 @@ public class Map {
             }
         }
     }
-
-    public void rockSummon(int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            //Determines coords and boulder size
-            int rockSize = Math.round(random.nextFloat() * 25);
-            int x = Math.round(random.nextFloat() * size);
-            int y = Math.round(random.nextFloat() * size);
-
-            int innerSize = rockSize /2;
-
-            //Checks bounds and if good
-            if (x > 25 && x < size - 25 && y > 25 && y < size - 25) {
-                //adds a solid middle of boulder
-                for (int j = 0; j < innerSize; j++) {
-                    for (int k = 0; k < innerSize; k++) {
-                        SML.get(y+j).set(x+k, 'c');
-                    }
-                }
-                //adds some lingering small rocks around the big boulder
-                for (int j = -innerSize; j < rockSize; j++) {
-                    for (int k = -innerSize; k < rockSize; k++) {
-                        if (random.nextFloat() > 0.25) {
-                            SML.get(y+j).set(x+k, 'c');
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
-

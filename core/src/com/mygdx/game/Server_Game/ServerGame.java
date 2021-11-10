@@ -36,14 +36,14 @@ public class ServerGame {
 
     public void mainLoop() {
         System.out.println("beginning the game");
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    // game stuff here
-                }
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    // game stuff here
+//                }
+//            }
+//        });
+//        thread.start();
     }
 }
