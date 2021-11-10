@@ -29,8 +29,8 @@ public class Map {
             SML.add(eachLineList);
         }
         virus(10, 1f,0.005f,'g');
-        virus(10, 1f,0.01f,'f');
-        virus(20, 1f,0.1f,'c');
+        virus(20, 1f,0.01f,'f');
+        virus(100, 1f,0.1f,'c');
     }
 
     public void virus(int quantity, float spreadRate, float decayRate, char infectionType) {

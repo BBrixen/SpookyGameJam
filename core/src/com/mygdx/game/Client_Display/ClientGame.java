@@ -151,23 +151,33 @@ public class ClientGame extends ApplicationAdapter {
 		Texture cobble = new Texture(Gdx.files.internal("cobble.png"));
 		Texture tree = new Texture(Gdx.files.internal("tree.png"));
 
-		int row = (int) (character.getPositionX()/64) + (this.map.size/2);
-		int col = (int) (character.getPositionY()/64) + (this.map.size/2);
+		int row = (int) (character.getPositionY()/64) + (this.map.size/2);
+		int col = (int) (character.getPositionX()/64) + (this.map.size/2);
 
-		for (int r = row - 20; r < row + 20 && r < this.map.size; r ++) {
-			if (r < 0) continue;
+		for (int r = row + 20; r > row - 20 && row > 0; r --) {
+			if (r >= this.map.size) continue;
+			float y = (r - this.map.size/2) * 64;
 			for (int c = col - 20; c < col + 20 && c < this.map.size; c ++) {
 				if (c < 0) continue;
 				char type = this.map.SML.get(r).get(c);
-				float x = (r - this.map.size/2) * 64;
-				float y = (c - this.map.size/2) * 64;
+				float x = (c - this.map.size/2) * 64;
 
 				Texture tile = dirt; // the default for now
 				if (type == 'g') tile = grass;
 				if (type == 'f') tile = tree;
 				if (type == 'c') tile = cobble;
+
 				Sprite s = new Sprite(tile);
 				s.setPosition(x, y);
+
+				if (type == 'f') { // special stuff needed for trees
+					s.setScale(3);
+					s.setPosition(x+32, y+32);
+					Sprite treeFlooring = new Sprite(grass); // might wanna change this later on to match the sourrounding terrain
+					treeFlooring.setPosition(x, y);
+					treeFlooring.draw(batch);
+				}
+
 				s.draw(batch);
 			}
 		}
