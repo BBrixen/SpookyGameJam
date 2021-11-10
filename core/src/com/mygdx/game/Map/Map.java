@@ -28,8 +28,8 @@ public class Map {
             }
             SML.add(eachLineList);
         }
-        virus(10, 1f,0.005f,'g');
-        virus(20, 1f,0.01f,'f');
+        virus(10, 1f,0.005f, 'g');
+        virus(50, 1f,0.01f,'f');
         virus(100, 1f,0.1f,'c');
     }
 
@@ -55,6 +55,16 @@ public class Map {
                 if (random.nextFloat() >= threshold) continue; // guard clause to not make it a forest
 
                 SML.get(y).set(x, infectionType);
+                if (infectionType == 'f') {
+                    char type = infectionType;
+                    if (random.nextFloat() > 0.5) {
+                        type = 't'; // we want to have a 50/50 split of different trees
+                        if (random.nextFloat() > 0.5) type = 'T';
+                    } else if (random.nextFloat() > 0.5) {
+                        type = 'F';
+                    }
+                    SML.get(y).set(x, type);
+                }
 
                 // the way this is currently set up, the forests cannot move in if they are on the edges
                 // i think its fine this was

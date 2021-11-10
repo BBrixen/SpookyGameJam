@@ -20,6 +20,7 @@ import com.mygdx.game.Server_Game.ServerGame;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import com.mygdx.game.Entities.Textures;
 
 public class ClientGame extends ApplicationAdapter {
 	// the display for the user
@@ -146,10 +147,6 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void renderMap() {
 		if (this.map == null) return;
-		Texture grass = new Texture(Gdx.files.internal("grass.png"));
-		Texture dirt = new Texture(Gdx.files.internal("dirt.png"));
-		Texture cobble = new Texture(Gdx.files.internal("cobble.png"));
-		Texture tree = new Texture(Gdx.files.internal("tree.png"));
 
 		int row = (int) (character.getPositionY()/64) + (this.map.size/2);
 		int col = (int) (character.getPositionX()/64) + (this.map.size/2);
@@ -162,20 +159,28 @@ public class ClientGame extends ApplicationAdapter {
 				char type = this.map.SML.get(r).get(c);
 				float x = (c - this.map.size/2) * 64;
 
-				Texture tile = dirt; // the default for now
-				if (type == 'g') tile = grass;
-				if (type == 'f') tile = tree;
-				if (type == 'c') tile = cobble;
+				Texture tile = Textures.dirt; // the default for now
+				if (type == 'g') tile = Textures.grass;
+				if (type == 'f') tile = Textures.tree;
+				if (type == 'F') tile = Textures.tree;
+				if (type == 't') tile = Textures.tree2;
+				if (type == 'T') tile = Textures.tree2;
+				if (type == 'c') tile = Textures.cobble;
 
 				Sprite s = new Sprite(tile);
 				s.setPosition(x, y);
 
-				if (type == 'f') { // special stuff needed for trees
+				if (type == 'f' || type == 't' || type == 'T' || type == 'F') { // special stuff needed for trees
 					s.setScale(3);
-					s.setPosition(x+32, y+32);
-					Sprite treeFlooring = new Sprite(grass); // might wanna change this later on to match the sourrounding terrain
+					s.setPosition(x+16, y+64);
+					if (type == 'F' || type == 'T') s.flip(true, false);
+					if (type == 't' || type == 'T') s.setScale(2);
+
+					// tree flooring
+					Sprite treeFlooring = new Sprite(Textures.grass); // might wanna change this later on to match the sourrounding terrain
 					treeFlooring.setPosition(x, y);
 					treeFlooring.draw(batch);
+
 				}
 
 				s.draw(batch);
