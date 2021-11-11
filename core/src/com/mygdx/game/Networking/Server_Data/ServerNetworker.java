@@ -1,6 +1,7 @@
 package com.mygdx.game.Networking.Server_Data;
 
 
+import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Server_Game.Player;
 import com.mygdx.game.Server_Game.ServerGame;
 
@@ -12,21 +13,22 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ServerNetworker {
 
     private ServerSocket serverSocket;
     private HashMap<Socket, Player> sockets;
-    private Queue<NetworkData> queue;
-    private boolean isSending;
+    public boolean isSending, alreadySending;
     private ServerGame game;
     private int pID = 0;
     
     public ServerNetworker(int number_of_clients) throws IOException{
         sockets = new HashMap<>();
-        queue = new LinkedList<>();
         isSending = false;
-        this.game = new ServerGame(this, number_of_clients, false);
+        this.game = new ServerGame(this, number_of_clients, true);
 
         System.out.println("Starting Server");
         serverSocket = new ServerSocket(7777);
@@ -61,9 +63,6 @@ public class ServerNetworker {
         //it does nothing but without it everything breaks, idk why
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
-//        sending connected message to socket
-//        sendData(new NetworkData(null, null), socket);
-
         // add player to game after everything is established
         Player p = new Player(pID);
         sockets.put(socket, p);
@@ -72,12 +71,6 @@ public class ServerNetworker {
     }
 
     public void sendData(NetworkData data, Socket recipient) throws IOException {
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         ObjectOutputStream out = new ObjectOutputStream(recipient.getOutputStream());
         out.reset(); // cleaning before
 
@@ -86,12 +79,6 @@ public class ServerNetworker {
 
         // cleaning afterwards
         out.flush();
-
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public NetworkData receiveData(Socket socket) throws IOException, ClassNotFoundException {
@@ -112,6 +99,24 @@ public class ServerNetworker {
         }
     }
 
+    public void continuallySendData() {
+        if (alreadySending) return;
+        alreadySending = true;
+        final ServerGame game = this.game;
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                isSending = true;
+                try {
+                    game.gameData.seed = System.currentTimeMillis();
+                    sendDataToOtherClients(new NetworkData(game.gameData));
+                } catch (IOException e) { e.printStackTrace(); }
+                isSending = false;
+            }
+        }, 0, 100, TimeUnit.MILLISECONDS);
+    }
+
     public void continuallyRecieveDataFromClient(Socket client_socket) {
         final Socket finalClientSocket = client_socket;
         //thread the receiving data code so that it can run at the same time as the send data
@@ -124,14 +129,13 @@ public class ServerNetworker {
                         NetworkData data = receiveData(finalClientSocket);
                         handleIncomingData(data);
 
-                    } catch (IOException | ClassNotFoundException e) {
+                    } catch (IOException | ClassNotFoundException | InterruptedException e) {
                         System.out.println(finalClientSocket + " disconnected");
                         sockets.remove(finalClientSocket);
 
                         // leave message
                         // remove the player from the gamedata
-                        NetworkData message = new NetworkData(null);
-                        addToQueueAndSend(message);
+                        NetworkData message = new NetworkData(new GameData(0));
 
                         return;
                     }
@@ -141,35 +145,14 @@ public class ServerNetworker {
         thread.start();
     }
 
-    public void startSendingQueuedData() {
-        this.isSending = true;
-
-        while (!this.queue.isEmpty()) {
-            try {
-                NetworkData data = this.queue.remove();
-                sendDataToOtherClients(data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void handleIncomingData(NetworkData data) throws InterruptedException {
+        if (isSending) {
+            Thread.sleep(20);
         }
-
-        this.isSending = false;
-    }
-
-    public void handleIncomingData(NetworkData data) {
-        System.out.println(data);
-        System.out.println("the number of clients is " + this.sockets.size());
+        this.game.gameData = data.getGameData();
+        System.out.println("GAME UPDATED WITH NEW DATA: " + game.gameData.players.get(0).getSpeedX());
         // this will just call game functions, and the game will call
         // addToQueueAndSend when it is finished and ready to update the players
-        addToQueueAndSend(data);
-    }
-
-    public void addToQueueAndSend(NetworkData data) {
-        queue.add(data);
-
-        if (! isSending){
-            startSendingQueuedData();
-        }
     }
 }
 

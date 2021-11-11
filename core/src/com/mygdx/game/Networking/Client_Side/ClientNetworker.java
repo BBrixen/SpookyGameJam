@@ -1,7 +1,9 @@
 package com.mygdx.game.Networking.Client_Side;
 
 import com.mygdx.game.Client_Display.ClientGame;
+import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Server_Data.NetworkData;
+import com.mygdx.game.Server_Game.GameData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -54,7 +56,8 @@ public class ClientNetworker {
                 while (true) {
                     try {
                         NetworkData data = receiveData();
-                        game.updateGameData(data.getData());
+                        game.updateGameData(data.getGameData());
+
                         // depending on the data recieved, we may need to update the display, or bring up a pop up menu for the user to interact with
 //                        display.update(data);
                     } catch (IOException | ClassNotFoundException e) {

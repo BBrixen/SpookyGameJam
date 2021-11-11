@@ -12,14 +12,16 @@ public class InputHandler {
     // server side
     // handles the input from an actor
 
-    public static final float defaultSpeed = 64.0f;
+    public static final float defaultSpeed = 3*180.0f; // 64 speed should be about 1 tile per second
     public static final float diagonalMultiplier =
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;
 
     public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData,
                                      boolean multiplayer, GameCharacter character) {
+        // checks and initializing keypresses
         if (p == null) return;
+        if (gameData == null || !gameData.allPlayersConnected()) return;
         if (keyPresses == null) initKeyPresses();
         if (!isKeyChange()) return;
 
@@ -41,6 +43,8 @@ public class InputHandler {
 
         p.setSpeedX(deltaX);
         p.setSpeedY(deltaY);
+        p.setX(character.getPositionX());
+        p.setY(character.getPositionY());
         character.setSpeedX(deltaX);
         character.setSpeedY(deltaY);
         if (multiplayer) {
