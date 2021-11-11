@@ -1,19 +1,17 @@
-package com.mygdx.game.Server_Game;
+package com.mygdx.game.Entities.GameEntities;
 
 import java.io.Serializable;
 
-public class Player implements Serializable {
+public abstract class Entity implements Serializable {
 
     private float x, y;
     private float speedX, speedY;
-    private int id;
 
-    public Player(int pID) {
+    public Entity() {
         this.x = 0;
         this.y = 0;
         this.speedX = 0;
         this.speedY = 0;
-        this.id = pID;
     }
 
     public float getX() {
@@ -48,11 +46,4 @@ public class Player implements Serializable {
         this.speedY = speedY;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

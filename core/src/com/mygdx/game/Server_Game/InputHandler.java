@@ -2,7 +2,8 @@ package com.mygdx.game.Server_Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.Entities.GameCharacter;
+import com.mygdx.game.Entities.RenderingEntities.PlayerCharacter;
+import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Networking.Server_Data.NetworkData;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class InputHandler {
     private static HashMap<Integer, Boolean> keyPresses = null;
 
     public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData,
-                                     boolean multiplayer, GameCharacter character) {
+                                     boolean multiplayer, PlayerCharacter character) {
         // checks and initializing keypresses
         if (p == null) return;
         if (gameData == null || !gameData.allPlayersConnected()) return;
@@ -62,6 +63,7 @@ public class InputHandler {
         keyPresses.put(Input.Keys.W, false);
         keyPresses.put(Input.Keys.S, false);
         keyPresses.put(Input.Keys.D, false);
+        keyPresses.put(Input.Keys.E, false); // E is attack
     }
 
     public static boolean isKeyChange() {

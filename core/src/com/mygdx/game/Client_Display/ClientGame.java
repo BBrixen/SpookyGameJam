@@ -10,17 +10,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.game.Entities.GameCharacter;
-import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
+import com.mygdx.game.Entities.RenderingEntities.PlayerCharacter;
+import com.mygdx.game.Entities.RenderingEntities.Textures;
+import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Server_Game.InputHandler;
-import com.mygdx.game.Server_Game.Player;
 import com.mygdx.game.Server_Game.ServerGame;
+import com.mygdx.game.Map.Map;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import com.mygdx.game.Entities.Textures;
 
 public class ClientGame extends ApplicationAdapter {
 	// the display for the user
@@ -29,13 +29,11 @@ public class ClientGame extends ApplicationAdapter {
 
 	// rendering stuff
 	private SpriteBatch batch;
-	private Sprite backgroundSprite;
 	private OrthographicCamera camera;
 	private Stage stage;
-	private GameCharacter character;
-	private HashMap<Integer, GameCharacter> playerToSprite = new HashMap<>();
+	private PlayerCharacter character;
+	private HashMap<Integer, PlayerCharacter> playerToSprite = new HashMap<>();
 	private Music nightMusic;
-	private float w, h;
 	private Player thisPlayer;
 	private Map map;
 
@@ -49,6 +47,7 @@ public class ClientGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		// making camera
+		float w, h;
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera(w, h);
@@ -59,7 +58,7 @@ public class ClientGame extends ApplicationAdapter {
 		stage = new Stage(viewport, batch);
 
 		// adding character sprites
-		character = new GameCharacter(camera);
+		character = new PlayerCharacter(camera);
 		stage.addActor(character);
 
 		// loading sound
@@ -102,7 +101,7 @@ public class ClientGame extends ApplicationAdapter {
 				if (player.getId() == pID) {
 					playerToSprite.put(pID, character);
 				} else {
-					GameCharacter otherCharacter = new GameCharacter();
+					PlayerCharacter otherCharacter = new PlayerCharacter();
 					playerToSprite.put(player.getId(), otherCharacter);
 					stage.addActor(otherCharacter);
 				}
@@ -112,7 +111,7 @@ public class ClientGame extends ApplicationAdapter {
 		// update the position of each sprite
 		for (Player curPlayer : players) {
 			if (curPlayer.getId() == pID) continue; // dont affect current player bc the server gets all confused
-			GameCharacter sprite = playerToSprite.get(curPlayer.getId());
+			PlayerCharacter sprite = playerToSprite.get(curPlayer.getId());
 			sprite.setSpeedX(curPlayer.getSpeedX());
 			sprite.setSpeedY(curPlayer.getSpeedY());
 			if (curPlayer.getSpeedX() == 0 && curPlayer.getSpeedY() == 0) {
@@ -140,8 +139,8 @@ public class ClientGame extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		renderMap();
-		stage.act(Gdx.graphics.getDeltaTime());
 		batch.end();
+		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
 
@@ -153,11 +152,11 @@ public class ClientGame extends ApplicationAdapter {
 
 		for (int r = row + 20; r > row - 20 && row > 0; r --) {
 			if (r >= this.map.size) continue;
-			float y = (r - this.map.size/2) * 64;
+			float y = (r - this.map.size/2f) * 64;
 			for (int c = col - 20; c < col + 20 && c < this.map.size; c ++) {
 				if (c < 0) continue;
 				char type = this.map.SML.get(r).get(c);
-				float x = (c - this.map.size/2) * 64;
+				float x = (c - this.map.size/2f) * 64;
 
 				Texture tile = Textures.dirt; // the default for now
 				if (type == 'g') tile = Textures.grass;
@@ -174,7 +173,7 @@ public class ClientGame extends ApplicationAdapter {
 					s.setScale(3);
 					s.setPosition(x+16, y+64);
 					if (type == 'F' || type == 'T') s.flip(true, false);
-					if (type == 't' || type == 'T') s.setScale(2);
+					if (type == 't' || type == 'T') s.setScale(1.75f);
 
 					// tree flooring
 					Sprite treeFlooring = new Sprite(Textures.grass); // might wanna change this later on to match the sourrounding terrain
