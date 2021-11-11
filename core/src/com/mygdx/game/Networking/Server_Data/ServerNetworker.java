@@ -2,7 +2,7 @@ package com.mygdx.game.Networking.Server_Data;
 
 
 import com.mygdx.game.Server_Game.GameData;
-import com.mygdx.game.Server_Game.Player;
+import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Server_Game.ServerGame;
 
 import java.io.IOException;
@@ -11,8 +11,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

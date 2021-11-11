@@ -1,4 +1,4 @@
-package com.mygdx.game.Entities;
+package com.mygdx.game.Entities.RenderingEntities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class GameCharacter extends Actor {
+public class PlayerCharacter extends Actor {
 
     Texture texture;
     Sprite characterSprite;
     OrthographicCamera camera;
     float positionX, positionY, speedX, speedY;
 
-    public GameCharacter() {
+    public PlayerCharacter() {
         positionX = 0;
         positionY = 0;
         speedX = 0;
@@ -25,7 +25,7 @@ public class GameCharacter extends Actor {
         characterSprite.setScale(2.5f);
     }
 
-    public GameCharacter(OrthographicCamera camera) {
+    public PlayerCharacter(OrthographicCamera camera) {
         this();
         this.camera = camera;
     }

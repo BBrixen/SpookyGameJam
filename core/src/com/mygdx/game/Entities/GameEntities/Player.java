@@ -1,4 +1,4 @@
-package com.mygdx.game.Server_Game;
+package com.mygdx.game.Entities.GameEntities;
 
 import java.io.Serializable;
 
