@@ -22,7 +22,7 @@ public class PlayerCharacter extends Actor {
 
         texture = new Texture(Gdx.files.internal("cat2.png"));
         characterSprite = new Sprite(texture);
-        characterSprite.setScale(2.5f);
+        characterSprite.setScale(1.25f);
     }
 
     public PlayerCharacter(OrthographicCamera camera) {
