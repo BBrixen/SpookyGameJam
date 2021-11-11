@@ -107,7 +107,7 @@ public class ServerNetworker {
             public void run() {
                 isSending = true;
                 try {
-                    game.gameData.seed = System.currentTimeMillis();
+//                    game.gameData.seed = System.currentTimeMillis();
                     sendDataToOtherClients(new NetworkData(game.gameData));
                 } catch (IOException e) { e.printStackTrace(); }
                 isSending = false;
