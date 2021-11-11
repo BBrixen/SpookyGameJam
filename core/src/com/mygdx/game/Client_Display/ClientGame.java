@@ -29,13 +29,11 @@ public class ClientGame extends ApplicationAdapter {
 
 	// rendering stuff
 	private SpriteBatch batch;
-	private Sprite backgroundSprite;
 	private OrthographicCamera camera;
 	private Stage stage;
 	private PlayerCharacter character;
 	private HashMap<Integer, PlayerCharacter> playerToSprite = new HashMap<>();
 	private Music nightMusic;
-	private float w, h;
 	private Player thisPlayer;
 	private Map map;
 
@@ -49,6 +47,7 @@ public class ClientGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		// making camera
+		float w, h;
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera(w, h);
@@ -153,11 +152,11 @@ public class ClientGame extends ApplicationAdapter {
 
 		for (int r = row + 20; r > row - 20 && row > 0; r --) {
 			if (r >= this.map.size) continue;
-			float y = (r - this.map.size/2) * 64;
+			float y = (r - this.map.size/2f) * 64;
 			for (int c = col - 20; c < col + 20 && c < this.map.size; c ++) {
 				if (c < 0) continue;
 				char type = this.map.SML.get(r).get(c);
-				float x = (c - this.map.size/2) * 64;
+				float x = (c - this.map.size/2f) * 64;
 
 				Texture tile = Textures.dirt; // the default for now
 				if (type == 'g') tile = Textures.grass;

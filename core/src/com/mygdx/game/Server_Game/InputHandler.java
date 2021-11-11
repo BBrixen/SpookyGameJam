@@ -13,7 +13,7 @@ public class InputHandler {
     // server side
     // handles the input from an actor
 
-    public static final float defaultSpeed = 180.0f; // 64 speed should be about 1 tile per second
+    public static final float defaultSpeed = 3*180.0f; // 64 speed should be about 1 tile per second
     public static final float diagonalMultiplier =
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;
