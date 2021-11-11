@@ -18,11 +18,11 @@ public class Map {
         for (int i = 0; i < size; i++) {
             List<Character> eachLineList = new ArrayList<>();
             for (int j = 0; j < size; j++) {
-                eachLineList.add('d');
+                eachLineList.add('g');
             }
             SML.add(eachLineList);
         }
-        virus(10, 1f,0.005f, 'g');
+        virus(10, 1f,0.01f, 'd');
         virus(50, 1f,0.01f,'f');
         virus(100, 1f,0.1f,'c');
     }

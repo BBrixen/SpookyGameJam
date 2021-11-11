@@ -159,8 +159,8 @@ public class ClientGame extends ApplicationAdapter {
 				char type = this.map.SML.get(r).get(c);
 				float x = (c - this.map.size/2f) * 64;
 
-				Texture tile = Textures.dirt; // the default for now
-				if (type == 'g') tile = Textures.grass;
+				Texture tile = Textures.grass; // the default for now
+				if (type == 'd') tile = Textures.dirt;
 				if (type == 'f') tile = Textures.tree;
 				if (type == 'F') tile = Textures.tree;
 				if (type == 't') tile = Textures.tree2;
@@ -177,7 +177,7 @@ public class ClientGame extends ApplicationAdapter {
 					if (type == 't' || type == 'T') s.setScale(1.75f);
 
 					// tree flooring
-					Sprite treeFlooring = new Sprite(Textures.grass); // might wanna change this later on to match the sourrounding terrain
+					Sprite treeFlooring = new Sprite(Textures.dirt); // might wanna change this later on to match the sourrounding terrain
 					treeFlooring.setPosition(x, y);
 					treeFlooring.draw(batch);
 
