@@ -46,6 +46,8 @@ public class PlayerCharacter extends Actor {
 
     public void setSpeedX(float speedX) {
         this.speedX = speedX;
+        if (speedX < 0) characterSprite.setFlip(true, false);
+        if (speedX > 0) characterSprite.setFlip(false, false);
     }
 
     public void setSpeedY(float speedY) {

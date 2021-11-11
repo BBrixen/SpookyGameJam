@@ -51,6 +51,7 @@ public class ClientGame extends ApplicationAdapter {
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera(w, h);
+		camera.zoom = 0.5f;
 
 		// setting view
 		FitViewport viewport = new FitViewport(w, h, camera);
@@ -150,10 +151,10 @@ public class ClientGame extends ApplicationAdapter {
 		int row = (int) (character.getPositionY()/64) + (this.map.size/2);
 		int col = (int) (character.getPositionX()/64) + (this.map.size/2);
 
-		for (int r = row + 20; r > row - 20 && row > 0; r --) {
+		for (int r = row + 10; r > row - 10 && row > 0; r --) {
 			if (r >= this.map.size) continue;
 			float y = (r - this.map.size/2f) * 64;
-			for (int c = col - 20; c < col + 20 && c < this.map.size; c ++) {
+			for (int c = col - 10; c < col + 10 && c < this.map.size; c ++) {
 				if (c < 0) continue;
 				char type = this.map.SML.get(r).get(c);
 				float x = (c - this.map.size/2f) * 64;
@@ -171,7 +172,7 @@ public class ClientGame extends ApplicationAdapter {
 
 				if (type == 'f' || type == 't' || type == 'T' || type == 'F') { // special stuff needed for trees
 					s.setScale(3);
-					s.setPosition(x+16, y+64);
+					s.setPosition(x+16, y+40);
 					if (type == 'F' || type == 'T') s.flip(true, false);
 					if (type == 't' || type == 'T') s.setScale(1.75f);
 
