@@ -38,7 +38,7 @@ public class ClientGame extends ApplicationAdapter {
 	private Map map;
 
 	// multiplayer stuff
-	private final boolean multiplayer = true;
+	private final boolean multiplayer = false;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
