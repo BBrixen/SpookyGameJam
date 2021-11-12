@@ -38,7 +38,7 @@ public class ClientGame extends ApplicationAdapter {
 	private Map map;
 
 	// multiplayer stuff
-	private final boolean multiplayer = true;
+	private final boolean multiplayer = false;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
@@ -166,13 +166,15 @@ public class ClientGame extends ApplicationAdapter {
 				if (type == 't') tile = Textures.tree2;
 				if (type == 'T') tile = Textures.tree2;
 				if (type == 'c') tile = Textures.cobble;
+				if (type == 'C') tile = Textures.manmadeCobble;
+				if (type == 'B') continue; // add once lydia has made the cobble texture
 
 				Sprite s = new Sprite(tile);
 				s.setPosition(x, y);
 
 				if (type == 'f' || type == 't' || type == 'T' || type == 'F') { // special stuff needed for trees
-					s.setScale(3);
-					s.setPosition(x+16, y+40);
+					s.setScale(1.75f);
+					s.setPosition(x, y+40);
 					if (type == 'F' || type == 'T') s.flip(true, false);
 					if (type == 't' || type == 'T') s.setScale(1.75f);
 
