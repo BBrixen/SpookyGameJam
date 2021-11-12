@@ -165,6 +165,8 @@ public class ClientGame extends ApplicationAdapter {
 				if (type == 'F') tile = Textures.tree;
 				if (type == 't') tile = Textures.tree2;
 				if (type == 'T') tile = Textures.tree2;
+				if (type == 'r') tile = Textures.tree3;
+				if (type == 'R') tile = Textures.tree3;
 				if (type == 'c') tile = Textures.cobble;
 				if (type == 'C') tile = Textures.manmadeCobble;
 				if (type == 'B') continue; // add once lydia has made the cobble texture
@@ -172,11 +174,11 @@ public class ClientGame extends ApplicationAdapter {
 				Sprite s = new Sprite(tile);
 				s.setPosition(x, y);
 
-				if (type == 'f' || type == 't' || type == 'T' || type == 'F') { // special stuff needed for trees
+				if (type == 'f' || type == 't' || type == 'T' || type == 'F' || type == 'r' || type == 'R') {
+					// special stuff needed for trees
 					s.setScale(1.75f);
-					s.setPosition(x, y+40);
-					if (type == 'F' || type == 'T') s.flip(true, false);
-					if (type == 't' || type == 'T') s.setScale(1.75f);
+					s.setPosition(x, y+32);
+					if (type == 'F' || type == 'T' || type == 'R') s.flip(true, false);
 
 					// tree flooring
 					Sprite treeFlooring = new Sprite(Textures.dirt); // might wanna change this later on to match the sourrounding terrain

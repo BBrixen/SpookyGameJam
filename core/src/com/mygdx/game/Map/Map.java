@@ -53,11 +53,17 @@ public class Map {
                 SML.get(y).set(x, infectionType);
                 if (infectionType == 'f') {
                     char type = infectionType;
-                    if (random.nextFloat() > 0.5) {
-                        type = 't'; // we want to have a 50/50 split of different trees
-                        if (random.nextFloat() > 0.5) type = 'T';
-                    } else if (random.nextFloat() > 0.5) {
-                        type = 'F';
+                    float treeType = random.nextFloat();
+                    boolean treeFlipped = random.nextFloat() > 0.5;
+                    if (treeType > 0.5) {
+                        type = 't';
+                        if (treeFlipped) type = 'T';
+                    } else if (treeType > 0.25) {
+                        type = 'f';
+                        if (treeFlipped) type = 'F';
+                    } else {
+                        type = 'r';
+                        if (treeFlipped) type = 'R';
                     }
                     SML.get(y).set(x, type);
                 }

@@ -11,5 +11,6 @@ public class Textures {
     public static Texture manmadeCobble = new Texture(Gdx.files.internal("cobble_premade.png"));
     public static Texture tree = new Texture(Gdx.files.internal("tree.png"));
     public static Texture tree2 = new Texture(Gdx.files.internal("tree2.png"));
+    public static Texture tree3 = new Texture(Gdx.files.internal("tree3.png"));
 
 }
