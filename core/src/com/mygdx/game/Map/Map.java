@@ -83,6 +83,12 @@ public class Map {
         }
     }
     public void maze () {
+        //BENNETT
+        //IF YOU ARE READING THIS
+        //YOU SHOULDNT BE
+        //THIS IS IMPECCABLE
+        //AND A PERFECT SYSTEm
+
         mazeList = new ArrayList<>(); // MAKES THE MAP MEGA LIST
         List<Character> mazeLine1  = Arrays.asList('B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B');
         List<Character> mazeLine2  = Arrays.asList('B', 'C', 'C', 'C', 'C', 'C', 'C', 'B', 'C', 'B', 'B', 'B', 'C', 'C', 'B', 'B', 'B', 'B', 'C', 'C', 'C', 'B', 'C', 'C', 'C', 'C', 'B', 'B', 'C', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B');
@@ -177,6 +183,7 @@ public class Map {
         System.out.println(startingX);
         System.out.println(startingY);
 
+        //decides how to flip the maze to give it a more random feel
         if (randomDirection <= 0.25) {
             for (int i = 0; i < 41; i++) {
                 for (int j = 0; j < 41; j++) {
