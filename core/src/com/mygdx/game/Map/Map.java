@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Map {
 
-    public List<List<Character>> SML;
+    public List<List<Tile>> SML;
     public List<List<Character>> mazeList;
     private final Random random;
     public final int size = 500;
@@ -17,19 +17,19 @@ public class Map {
         random = new Random(seed);
 
         for (int i = 0; i < size; i++) {
-            List<Character> eachLineList = new ArrayList<>();
+            List<Tile> eachLineList = new ArrayList<>();
             for (int j = 0; j < size; j++) {
-                eachLineList.add('g');
+                eachLineList.add(new Tile("grass", false));
             }
             SML.add(eachLineList);
         }
-        virus(10, 1f,0.01f, 'd');
-        virus(50, 1f,0.01f,'f');
-        virus(100, 1f,0.1f,'c');
-        maze();
+        virus(10, 1f,0.01f, "dirt");
+        virus(30, 1f,0.02f,"forest");
+        virus(100, 1f,0.1f,"cobble");
+//        maze();
     }
 
-    public void virus(int quantity, float spreadRate, float decayRate, char infectionType) {
+    public void virus(int quantity, float spreadRate, float decayRate, String infectionType) {
         for (int i = 0; i < quantity; i++) {
             Queue<Pair<Integer, Integer>> theCurrentQueue = new LinkedList<>();
             Set<Pair<Integer, Integer>> usedSpaces = new HashSet<>();
@@ -47,26 +47,26 @@ public class Map {
                 //checks queue item to see if it becomes a forest, then adds its neighbours
                 float distX = Math.abs(startingX - x);
                 float distY = Math.abs(startingY - y);
-                float threshold = (float) (spreadRate - decayRate * (distX + distY));
+                float threshold = spreadRate - decayRate * (distX + distY);
                 if (random.nextFloat() >= threshold) continue; // guard clause to not make it a forest
 
-                SML.get(y).set(x, infectionType);
-                if (infectionType == 'f') {
-                    char type = infectionType;
+                String type = infectionType;
+                if (infectionType.equals("forest")) {
+                    // picking the type of tree
                     float treeType = random.nextFloat();
                     boolean treeFlipped = random.nextFloat() > 0.5;
                     if (treeType > 0.5) {
-                        type = 't';
-                        if (treeFlipped) type = 'T';
+                        type = "tree2";
                     } else if (treeType > 0.25) {
-                        type = 'f';
-                        if (treeFlipped) type = 'F';
+                        type = "tree1";
                     } else {
-                        type = 'r';
-                        if (treeFlipped) type = 'R';
+                        type = "tree3";
                     }
-                    SML.get(y).set(x, type);
+                    SML.get(y).get(x).setFlipped(treeFlipped);
+                    SML.get(y).get(x).setyOffset(32);
+
                 }
+                SML.get(y).get(x).updateType(type);
 
                 // the way this is currently set up, the forests cannot move in if they are on the edges
                 // i think its fine this was
@@ -193,28 +193,28 @@ public class Map {
         if (randomDirection <= 0.25) {
             for (int i = 0; i < 41; i++) {
                 for (int j = 0; j < 41; j++) {
-                    SML.get(startingY + j).set(startingX + i, mazeList.get(j).get(i));
+//                    SML.get(startingY + j).set(startingX + i, mazeList.get(j).get(i));
                 }
             }
         }
         else if (randomDirection > 0.25 && randomDirection <=.5) {
             for (int i = 0; i < 41; i++) {
                 for (int j = 0; j < 41; j++) {
-                    SML.get(startingY + j).set(startingX + i, mazeList.get(40-j).get(i));
+//                    SML.get(startingY + j).set(startingX + i, mazeList.get(40-j).get(i));
                 }
             }
         }
         else if (randomDirection > 0.5 && randomDirection <=0.75) {
             for (int i = 0; i < 41; i++) {
                 for (int j = 0; j < 41; j++) {
-                    SML.get(startingY + j).set(startingX + i, mazeList.get(j).get(40-i));
+//                    SML.get(startingY + j).set(startingX + i, mazeList.get(j).get(40-i));
                 }
             }
         }
         else if (randomDirection > 0.75) {
             for (int i = 0; i < 41; i++) {
                 for (int j = 0; j < 41; j++) {
-                    SML.get(startingY + j).set(startingX + i, mazeList.get(40-j).get(40-i));
+//                    SML.get(startingY + j).set(startingX + i, mazeList.get(40-j).get(40-i));
                 }
             }
         }

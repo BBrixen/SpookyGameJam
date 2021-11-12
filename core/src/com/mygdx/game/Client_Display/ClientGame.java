@@ -4,15 +4,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Map.Tile;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Entities.RenderingEntities.PlayerCharacter;
-import com.mygdx.game.Entities.RenderingEntities.Textures;
 import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Server_Game.InputHandler;
@@ -156,38 +154,9 @@ public class ClientGame extends ApplicationAdapter {
 			float y = (r - this.map.size/2f) * 64;
 			for (int c = col - 10; c < col + 10 && c < this.map.size; c ++) {
 				if (c < 0) continue;
-				char type = this.map.SML.get(r).get(c);
 				float x = (c - this.map.size/2f) * 64;
-
-				Texture tile = Textures.grass; // the default for now
-				if (type == 'd') tile = Textures.dirt;
-				if (type == 'f') tile = Textures.tree;
-				if (type == 'F') tile = Textures.tree;
-				if (type == 't') tile = Textures.tree2;
-				if (type == 'T') tile = Textures.tree2;
-				if (type == 'r') tile = Textures.tree3;
-				if (type == 'R') tile = Textures.tree3;
-				if (type == 'c') tile = Textures.cobble;
-				if (type == 'C') tile = Textures.manmadeCobble;
-				if (type == 'B') continue; // add once lydia has made the cobble texture
-
-				Sprite s = new Sprite(tile);
-				s.setPosition(x, y);
-
-				if (type == 'f' || type == 't' || type == 'T' || type == 'F' || type == 'r' || type == 'R') {
-					// special stuff needed for trees
-					s.setScale(1.75f);
-					s.setPosition(x, y+32);
-					if (type == 'F' || type == 'T' || type == 'R') s.flip(true, false);
-
-					// tree flooring
-					Sprite treeFlooring = new Sprite(Textures.dirt); // might wanna change this later on to match the sourrounding terrain
-					treeFlooring.setPosition(x, y);
-					treeFlooring.draw(batch);
-
-				}
-
-				s.draw(batch);
+				Tile tile = this.map.SML.get(r).get(c);
+				tile.render(x, y, batch);
 			}
 		}
 	}
