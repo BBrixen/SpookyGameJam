@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class PlayerCharacter extends Actor {
 
-    Texture texture;
-    Sprite characterSprite;
-    OrthographicCamera camera;
-    float positionX, positionY, speedX, speedY;
+    private Texture texture;
+    private Sprite characterSprite;
+    private OrthographicCamera camera;
+    private float positionX, positionY, speedX, speedY;
 
     public PlayerCharacter() {
         positionX = 0;
@@ -42,6 +42,8 @@ public class PlayerCharacter extends Actor {
         characterSprite.setPosition(this.positionX, this.positionY);
         if (this.camera != null)
             this.camera.position.set(this.positionX, this.positionY, 0);
+
+
     }
 
     public void setSpeedX(float speedX) {
@@ -72,5 +74,9 @@ public class PlayerCharacter extends Actor {
 
     public float getSpeedX() {
         return speedX;
+    }
+
+    public float getSpeedY() {
+        return speedY;
     }
 }

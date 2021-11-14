@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.Entities.RenderingEntities.PlayerCharacter;
 import com.mygdx.game.Entities.GameEntities.Player;
+import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Networking.Server_Data.NetworkData;
 import java.io.IOException;
@@ -13,13 +14,13 @@ public class InputHandler {
     // server side
     // handles the input from an actor
 
-    public static final float defaultSpeed = 5*180.0f; // 64 speed should be about 1 tile per second
+    public static final float defaultSpeed = 180.0f; // 64 speed should be about 1 tile per second
     public static final float diagonalMultiplier =
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;
 
     public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData,
-                                     boolean multiplayer, PlayerCharacter character) {
+                                     boolean multiplayer, PlayerCharacter character, Map map) {
         // checks and initializing keypresses
         if (p == null) return;
         if (gameData == null || !gameData.allPlayersConnected()) return;
@@ -42,12 +43,12 @@ public class InputHandler {
             deltaX *= diagonalMultiplier;
         }
 
+        character.setSpeedX(deltaX);
+        character.setSpeedY(deltaY);
         p.setSpeedX(deltaX);
         p.setSpeedY(deltaY);
         p.setX(character.getPositionX());
         p.setY(character.getPositionY());
-        character.setSpeedX(deltaX);
-        character.setSpeedY(deltaY);
         if (multiplayer) {
             try {
                 sender.sendData(new NetworkData(gameData));
@@ -86,7 +87,6 @@ public class InputHandler {
         }
         return change;
     }
-
 
 
 }

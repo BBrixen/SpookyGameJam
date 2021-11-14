@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Map.DefaultTile;
 import com.mygdx.game.Map.Tile;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Entities.RenderingEntities.PlayerCharacter;
@@ -124,22 +125,24 @@ public class ClientGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		float dTime = Gdx.graphics.getDeltaTime();
 		// pre-render interpretation
 		interpretGameData();
+
 
 		// reseting background
 		ScreenUtils.clear(90/255f, 230/255f, 80/255f, 1);
 
 		// handling inputs
 		InputHandler.handleKeyDown(thisPlayer, clientNetworker, currentGameData,
-					multiplayer, character);
+					multiplayer, character, this.map);
 
 		// rendering stuff
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		renderMap();
 		batch.end();
-		stage.act(Gdx.graphics.getDeltaTime());
+		stage.act(dTime);
 		stage.draw();
 	}
 

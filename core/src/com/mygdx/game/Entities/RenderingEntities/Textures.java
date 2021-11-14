@@ -7,6 +7,7 @@ public class Textures {
 
     public static Texture grass = new Texture(Gdx.files.internal("grass.png"));
     public static Texture dirt = new Texture(Gdx.files.internal("dirt.png"));
+    public static Texture boulder = new Texture(Gdx.files.internal("boulder.png"));
     public static Texture cobble = new Texture(Gdx.files.internal("cobble.png"));
     public static Texture manmadeCobble = new Texture(Gdx.files.internal("cobble_premade.png"));
     public static Texture tree = new Texture(Gdx.files.internal("tree.png"));
