@@ -99,12 +99,6 @@ public class Map {
     }
 
     public void maze () {
-        //BENNETT
-        //IF YOU ARE READING THIS
-        //YOU SHOULDNT BE
-        //THIS IS IMPECCABLE
-        //AND A PERFECT SYSTEm
-
         mazeList = new ArrayList<>(); // MAKES THE MAP MEGA LIST
 
         try {
@@ -141,7 +135,9 @@ public class Map {
                 char m = mazeList.get(i)[j];
                 Tile tile;
                 if (m == 'B') tile = new BoulderTile("boulder", y, x, size);
-                else tile = new DefaultTile("manmadeCobble", y, x, size);
+                else if (m == 'C') tile = new DefaultTile("manmadeCobble", y, x, size);
+                else if (m == 'i') tile = new DefaultTile("manmadeCobble", y, x, size); //WORKS FOR THE ITEMS< NO IDEA WHAT TO DO HERE BENNETT
+                else tile = new DefaultTile("manmadeCobble", y, x, size); //WORKS FOR CLASSES, NO IDEA WHAT DO
 
                 SML.get((i * yMult) + startingY).set((j * xMult) + startingX, tile);
             }
