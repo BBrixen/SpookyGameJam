@@ -106,50 +106,6 @@ public class Map {
         return new DefaultTile(type, row, col, size);
     }
 
-    public void maze () {
-        List<char[]> mazeList = new ArrayList<>(); // MAKES THE MAP MEGA LIST
-
-        try {
-            File file = new File("../src/com/mygdx/game/Map/maze.txt");
-            Scanner scanner = new Scanner(file);
-
-            while (scanner.hasNextLine()) {
-                char[] line = scanner.nextLine().toCharArray();
-                mazeList.add(line);
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        //gets some random coords to start the maze at
-        int startingX = Math.round(random.nextFloat() * (size-45));
-        int startingY = Math.round(random.nextFloat() * (size-45));
-
-        int yMult = 1;
-        if (random.nextFloat() > 0.5) yMult = -1;
-        int xMult = 1;
-        if (random.nextFloat() > 0.5) xMult = -1;
-
-
-        //decides how to flip the maze to give it a more random feel
-        for (int i = 0; i < mazeList.size(); i++) {
-            int y = (i * yMult) + startingY;
-            for (int j = 0; j < mazeList.get(i).length; j++) {
-                int x = (j * xMult) + startingX;
-                char m = mazeList.get(i)[j];
-                Tile tile;
-                if (m == 'B') tile = determineTile("boulder", y, x);
-                else if (m == 'C') tile = determineTile("manmadeCobble", y, x);
-                else if (m == 'i') tile = determineTile("item", y, x); //HELP: WORKS FOR THE ITEMS< NO IDEA WHAT TO DO HERE BENNETT
-                else tile = determineTile("grass", y, x);
-
-                SML.get((i * yMult) + startingY).set((j * xMult) + startingX, tile);
-            }
-        }
-    }
-
     public void generatePremade (String path) {
         List<char[]> premadeList = new ArrayList<>(); // MAKES THE PREMADE MEGA LIST
 
