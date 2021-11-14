@@ -30,6 +30,9 @@ public class DefaultTile extends Tile {
             case "manmadeCobble":
                 primaryTexture = Textures.manmadeCobble;
                 break;
+            case "wood":
+                primaryTexture = Textures.wood;
+                break;
         }
         sprite = new Sprite(primaryTexture);
         sprite.setScale(primaryScale);

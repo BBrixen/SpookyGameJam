@@ -156,7 +156,7 @@ public class Map {
                 else if (m == 'C') tile = determineTile("manmadeCobble", y, x);
                 else if (m == 'G') tile = determineTile("grass", y, x);
                 else if (m == 'D') tile = determineTile("dirt", y, x);
-                else if (m == 'w') tile = determineTile("wood", y, x); 
+                else if (m == 'W') tile = determineTile("wood", y, x);
                 else if (m == 'i') tile = determineTile("item", y, x);
                 else tile = determineTile("manmadeCobble", y, x); 
 
