@@ -11,6 +11,7 @@ public class Map {
 
     public List<List<Tile>> SML;
     public List<char[]> mazeList;
+    public List<char[]> townList;
     private final Random random;
     public final int size = 500;
 
@@ -29,7 +30,9 @@ public class Map {
         virus(10, 1f,0.01f, "dirt");
         virus(50, 1f,0.01f,"forest");
         virus(100, 1f,0.1f,"cobble");
+        virus(50, 1f, 0.1f, "boulder"); //HELP: THIS ISNT WORKING AND I DONT KNOW HOW
         maze();
+        town();
     }
 
     public int playerPositionToMapIndex(float pos) {
@@ -99,12 +102,6 @@ public class Map {
     }
 
     public void maze () {
-        //BENNETT
-        //IF YOU ARE READING THIS
-        //YOU SHOULDNT BE
-        //THIS IS IMPECCABLE
-        //AND A PERFECT SYSTEm
-
         mazeList = new ArrayList<>(); // MAKES THE MAP MEGA LIST
 
         try {
@@ -114,6 +111,50 @@ public class Map {
             while (scanner.hasNextLine()) {
                 char[] line = scanner.nextLine().toCharArray();
                 mazeList.add(line);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        //gets some random coords to start the maze at
+        int startingX = Math.round(random.nextFloat() * (size-45));
+        int startingY = Math.round(random.nextFloat() * (size-45));
+
+        int yMult = 1;
+        if (random.nextFloat() > 0.5) yMult = -1;
+        int xMult = 1;
+        if (random.nextFloat() > 0.5) xMult = -1;
+
+
+        //decides how to flip the maze to give it a more random feel
+        for (int i = 0; i < mazeList.size(); i++) {
+            int y = (i * yMult) + startingY;
+            for (int j = 0; j < mazeList.get(i).length; j++) {
+                int x = (j * xMult) + startingX;
+                char m = mazeList.get(i)[j];
+                Tile tile;
+                if (m == 'B') tile = new BoulderTile("boulder", y, x, size);
+                else if (m == 'C') tile = new DefaultTile("manmadeCobble", y, x, size);
+                else if (m == 'i') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR THE ITEMS< NO IDEA WHAT TO DO HERE BENNETT
+                else tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR CLASSES, NO IDEA WHAT DO
+
+                SML.get((i * yMult) + startingY).set((j * xMult) + startingX, tile);
+            }
+        }
+    }
+
+    public void town () {
+        townList = new ArrayList<>(); // MAKES THE TOWN MEGA LIST
+
+        try {
+            File file = new File("../src/com/mygdx/game/Map/town.txt");
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                char[] line = scanner.nextLine().toCharArray();
+                townList.add(line);
             }
 
         } catch (FileNotFoundException e) {
@@ -134,14 +175,19 @@ public class Map {
 
 
         //decides how to flip the maze to give it a more random feel
-        for (int i = 0; i < mazeList.size(); i++) {
+        for (int i = 0; i < townList.size(); i++) {
             int y = (i * yMult) + startingY;
-            for (int j = 0; j < mazeList.get(i).length; j++) {
+            for (int j = 0; j < townList.get(i).length; j++) {
                 int x = (j * xMult) + startingX;
-                char m = mazeList.get(i)[j];
+                char m = townList.get(i)[j];
                 Tile tile;
                 if (m == 'B') tile = new BoulderTile("boulder", y, x, size);
-                else tile = new DefaultTile("manmadeCobble", y, x, size);
+                else if (m == 'C') tile = new DefaultTile("manmadeCobble", y, x, size);
+                else if (m == 'G') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: grass tiles go here
+                else if (m == 'D') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: dirt tiles go here
+                else if (m == 'w') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: wooden tiles go here
+                else if (m == 'i') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR THE ITEMS< NO IDEA WHAT TO DO HERE BENNETT
+                else tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR CLASSES, NO IDEA WHAT DO
 
                 SML.get((i * yMult) + startingY).set((j * xMult) + startingX, tile);
             }
