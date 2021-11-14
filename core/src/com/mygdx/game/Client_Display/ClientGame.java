@@ -61,11 +61,11 @@ public class ClientGame extends ApplicationAdapter {
 		character = new PlayerCharacter(camera);
 		stage.addActor(character);
 
-		// loading sound
-		nightMusic = Gdx.audio.newMusic(Gdx.files.internal("night.mp3"));
-		nightMusic.setLooping(true);
-		nightMusic.setVolume(0.2f);
-		// TURNED OFF FOR TESTING
+		// loading sound, TURNED OFF FOR TESTING
+		// bennett: check dispose() funtion
+//		nightMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/night.mp3"));
+//		nightMusic.setLooping(true);
+//		nightMusic.setVolume(0.2f);
 //		nightMusic.play();
 
 		if (multiplayer) {
@@ -165,7 +165,7 @@ public class ClientGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		nightMusic.dispose();
+//		nightMusic.dispose();
 	}
 
 	public void updateGameData(GameData gameData) {

@@ -5,13 +5,16 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Textures {
 
-    public static Texture grass = new Texture(Gdx.files.internal("grass.png"));
-    public static Texture dirt = new Texture(Gdx.files.internal("dirt.png"));
-    public static Texture boulder = new Texture(Gdx.files.internal("boulder.png"));
-    public static Texture cobble = new Texture(Gdx.files.internal("cobble.png"));
-    public static Texture manmadeCobble = new Texture(Gdx.files.internal("cobble_premade.png"));
-    public static Texture tree = new Texture(Gdx.files.internal("tree.png"));
-    public static Texture tree2 = new Texture(Gdx.files.internal("tree2.png"));
-    public static Texture tree3 = new Texture(Gdx.files.internal("tree3.png"));
+    // map textures
+    public static Texture grass = new Texture(Gdx.files.internal("Sprites/GroundTiles/grass.png"));
+    public static Texture dirt = new Texture(Gdx.files.internal("Sprites/GroundTiles/dirt.png"));
+    public static Texture boulder = new Texture(Gdx.files.internal("Sprites/boulder.png"));
+    public static Texture cobble = new Texture(Gdx.files.internal("Sprites/GroundTiles/cobble.png"));
+    public static Texture manmadeCobble = new Texture(Gdx.files.internal("Sprites/GroundTiles/cobble_premade.png"));
+    public static Texture tree = new Texture(Gdx.files.internal("Sprites/tree.png"));
+    public static Texture tree2 = new Texture(Gdx.files.internal("Sprites/tree2.png"));
+    public static Texture tree3 = new Texture(Gdx.files.internal("Sprites/tree3.png"));
+
+    public static Texture player = new Texture(Gdx.files.internal("Sprites/cat.png"));
 
 }

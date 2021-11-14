@@ -108,7 +108,7 @@ public class Map {
         mazeList = new ArrayList<>(); // MAKES THE MAP MEGA LIST
 
         try {
-            File file = new File("/home/bbrixen/IdeaProjects/GameJam/core/src/com/mygdx/game/Map/maze.txt");
+            File file = new File("../src/com/mygdx/game/Map/maze.txt");
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {
