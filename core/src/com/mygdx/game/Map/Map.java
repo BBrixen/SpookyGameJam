@@ -22,7 +22,7 @@ public class Map {
         for (int i = 0; i < size; i++) {
             List<Tile> eachLineList = new ArrayList<>();
             for (int j = 0; j < size; j++) {
-                eachLineList.add(new DefaultTile("grass"));
+                eachLineList.add(new DefaultTile("grass", i, j, size));
             }
             SML.add(eachLineList);
         }
@@ -73,7 +73,7 @@ public class Map {
                     } else {
                         type = "tree3";
                     }
-                    SML.get(y).set(x, new TreeTile(type, treeFlipped));
+                    SML.get(y).set(x, new TreeTile(type, y, x, size, treeFlipped));
                 }
                 SML.get(y).get(x).updateType(type);
 
@@ -135,11 +135,13 @@ public class Map {
 
         //decides how to flip the maze to give it a more random feel
         for (int i = 0; i < mazeList.size(); i++) {
+            int y = (i * yMult) + startingY;
             for (int j = 0; j < mazeList.get(i).length; j++) {
+                int x = (j * xMult) + startingX;
                 char m = mazeList.get(i)[j];
                 Tile tile;
-                if (m == 'B') tile = new BoulderTile("boulder");
-                else tile = new DefaultTile("manmadeCobble");
+                if (m == 'B') tile = new BoulderTile("boulder", y, x, size);
+                else tile = new DefaultTile("manmadeCobble", y, x, size);
 
                 SML.get((i * yMult) + startingY).set((j * xMult) + startingX, tile);
             }

@@ -154,12 +154,10 @@ public class ClientGame extends ApplicationAdapter {
 
 		for (int r = row + 10; r > row - 10 && row > 0; r --) {
 			if (r >= this.map.size) continue;
-			float y = (r - this.map.size/2f) * 64;
 			for (int c = col - 10; c < col + 10 && c < this.map.size; c ++) {
 				if (c < 0) continue;
-				float x = (c - this.map.size/2f) * 64;
 				Tile tile = this.map.SML.get(r).get(c);
-				tile.render(x, y, batch);
+				tile.render(batch);
 			}
 		}
 	}

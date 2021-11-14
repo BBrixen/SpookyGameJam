@@ -7,16 +7,22 @@ import com.mygdx.game.Entities.RenderingEntities.Textures;
 
 public class BoulderTile extends Tile{
 
-    private Texture secondaryTexture;
-    private float yoffset;
+    private final Sprite background;
 
-    public BoulderTile(String type) {
-        super(type);
+    public BoulderTile(String type, int row, int col, int size) {
+        super(type, row, col, size);
         passable = false;
-        secondaryTexture = Textures.grass;
-        primaryTexture = Textures.boulder;
         primaryScale = 1.25f;
-        yoffset = 32;
+        float yoffset = 32;
+
+        // handling background
+        background = new Sprite(Textures.grass);
+        background.setPosition(x, y);
+
+        // handling sprite
+        sprite = new Sprite(Textures.boulder);
+        sprite.setScale(primaryScale);
+        sprite.setPosition(x, y + yoffset);
     }
 
     @Override
@@ -25,17 +31,11 @@ public class BoulderTile extends Tile{
     }
 
     @Override
-    public void render(float x, float y, SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         // renders the primary and secondary texture, if there are any
-        if (primaryTexture == null) return; // texture not implemented yet
+        if (sprite == null) return; // texture not implemented yet
 
-        Sprite secondary = new Sprite(secondaryTexture);
-        secondary.setPosition(x, y);
-        secondary.draw(batch);
-
-        Sprite primary = new Sprite(primaryTexture);
-        primary.setScale(primaryScale);
-        primary.setPosition(x, y + yoffset);
-        primary.draw(batch);
+        background.draw(batch);
+        sprite.draw(batch);
     }
 }

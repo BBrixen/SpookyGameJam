@@ -11,20 +11,18 @@ public class DefaultTile extends Tile {
      * This creates a map tile, this is mostly to help with map rendering and sanity.
      * Default Tile represents dirt, grass, cobble
      */
-    public DefaultTile(String type) {
-        super(type);
+    public DefaultTile(String type, int row, int col, int size) {
+        super(type, row, col, size);
         updateType(type);
     }
 
     public void updateType(String type) {
         // handling all the different types of tiles
+        Texture primaryTexture = Textures.grass;
         this.type = type;
         switch (type) {
             case "dirt":
                 primaryTexture = Textures.dirt;
-                break;
-            case "grass":
-                primaryTexture = Textures.grass;
                 break;
             case "cobble":
                 primaryTexture = Textures.cobble;
@@ -33,17 +31,16 @@ public class DefaultTile extends Tile {
                 primaryTexture = Textures.manmadeCobble;
                 break;
         }
+        sprite = new Sprite(primaryTexture);
+        sprite.setScale(primaryScale);
+        sprite.setPosition(x, y);
     }
 
     @Override
-    public void render(float x, float y, SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         // renders the primary and secondary texture, if there are any
-        if (primaryTexture == null) return; // texture not implemented yet
-
-        Sprite primary = new Sprite(primaryTexture);
-        primary.setScale(primaryScale);
-        primary.setPosition(x, y);
-        primary.draw(batch);
+        if (sprite == null) return; // texture not implemented yet
+        sprite.draw(batch);
     }
 
 }

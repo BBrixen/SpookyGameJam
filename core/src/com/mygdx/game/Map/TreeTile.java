@@ -7,24 +7,27 @@ import com.mygdx.game.Entities.RenderingEntities.Textures;
 
 public class TreeTile extends Tile {
 
-    private Texture secondaryTexture;
-    private float yoffset;
-    private boolean flipped;
+    private final Sprite background;
+    private final float yoffset;
+    private final boolean flipped;
 
-    public TreeTile(String type, boolean flipped) {
-        super(type);
+    public TreeTile(String type, int row, int col, int size, boolean flipped) {
+        super(type, row, col, size);
         this.flipped = flipped;
         yoffset = 32;
-        secondaryTexture = Textures.dirt;
         primaryScale = 1.5f;
+
+        // handling background
+        background = new Sprite(Textures.dirt);
+        background.setPosition(x, y);
+
+        // handles sprite too
         updateType(type);
     }
 
     public void updateType(String type) {
+        Texture primaryTexture = Textures.tree;
         switch (type) {
-            case "tree1":
-                primaryTexture = Textures.tree;
-                break;
             case "tree2":
                 primaryTexture = Textures.tree2;
                 break;
@@ -32,20 +35,18 @@ public class TreeTile extends Tile {
                 primaryTexture = Textures.tree3;
                 break;
         }
+        sprite = new Sprite(primaryTexture);
+        sprite.setScale(primaryScale);
+        sprite.setPosition(x, y + yoffset);
+        sprite.setFlip(flipped, false);
     }
 
     @Override
-    public void render(float x, float y, SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         // renders the primary and secondary texture, if there are any
-        if (primaryTexture == null) return; // texture not implemented yet
+        if (sprite == null) return; // texture not implemented yet
 
-        Sprite secondary = new Sprite(secondaryTexture);
-        secondary.setPosition(x, y);
-        secondary.draw(batch);
-
-        Sprite primary = new Sprite(primaryTexture);
-        primary.setScale(primaryScale);
-        primary.setPosition(x, y + yoffset);
-        primary.draw(batch);
+        background.draw(batch);
+        sprite.draw(batch);
     }
 }
