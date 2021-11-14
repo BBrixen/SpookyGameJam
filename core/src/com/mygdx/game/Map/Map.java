@@ -1,5 +1,6 @@
 package com.mygdx.game.Map;
 
+import com.mygdx.game.Map.Tiles.*;
 import javafx.util.Pair;
 
 import java.io.File;
@@ -10,8 +11,6 @@ import java.util.*;
 public class Map {
 
     public List<List<Tile>> SML;
-    public List<char[]> mazeList;
-    public List<char[]> townList;
     private final Random random;
     public final int size = 500;
 
@@ -30,9 +29,10 @@ public class Map {
         virus(10, 1f,0.01f, "dirt");
         virus(50, 1f,0.01f,"forest");
         virus(100, 1f,0.1f,"cobble");
-        virus(50, 1f, 0.1f, "boulder"); //HELP: THIS ISNT WORKING AND I DONT KNOW HOW
-        maze();
-        town();
+        virus(50, 1f, 0.1f, "boulder");
+
+        generatePremade("../src/com/mygdx/game/Map/maze.txt");
+        generatePremade("../src/com/mygdx/game/Map/town.txt");
     }
 
     public int playerPositionToMapIndex(float pos) {
@@ -64,21 +64,7 @@ public class Map {
                 float threshold = spreadRate - decayRate * (distX + distY);
                 if (random.nextFloat() >= threshold) continue; // guard clause to not make it a forest
 
-                String type = infectionType;
-                if (infectionType.equals("forest")) {
-                    // picking the type of tree
-                    float treeType = random.nextFloat();
-                    boolean treeFlipped = random.nextFloat() > 0.5;
-                    if (treeType > 0.5) {
-                        type = "tree2";
-                    } else if (treeType > 0.25) {
-                        type = "tree1";
-                    } else {
-                        type = "tree3";
-                    }
-                    SML.get(y).set(x, new TreeTile(type, y, x, size, treeFlipped));
-                }
-                SML.get(y).get(x).updateType(type);
+                SML.get(y).set(x, determineTile(infectionType, y, x));
 
                 // the way this is currently set up, the forests cannot move in if they are on the edges
                 // i think its fine this was
@@ -101,8 +87,27 @@ public class Map {
         }
     }
 
+    public Tile determineTile(String type, int row, int col) {
+        // takes type and returns a new tile object with needed type
+        if (type.equals("boulder")) return new BoulderTile(type, row, col, size);
+
+        if (type.equals("forest")) {
+            float treeTypeRandomizer = random.nextFloat();
+            if (treeTypeRandomizer > 0.5) type = "tree2";
+            else if (treeTypeRandomizer > 0.25) type = "tree1";
+            else type = "tree3";
+
+            boolean treeFlipped = random.nextFloat() > 0.5;
+            return new TreeTile(type, row, col, size, treeFlipped);
+        }
+
+        if (type.equals("item")) return new ItemTile(type, row, col, size);
+
+        return new DefaultTile(type, row, col, size);
+    }
+
     public void maze () {
-        mazeList = new ArrayList<>(); // MAKES THE MAP MEGA LIST
+        List<char[]> mazeList = new ArrayList<>(); // MAKES THE MAP MEGA LIST
 
         try {
             File file = new File("../src/com/mygdx/game/Map/maze.txt");
@@ -135,26 +140,26 @@ public class Map {
                 int x = (j * xMult) + startingX;
                 char m = mazeList.get(i)[j];
                 Tile tile;
-                if (m == 'B') tile = new BoulderTile("boulder", y, x, size);
-                else if (m == 'C') tile = new DefaultTile("manmadeCobble", y, x, size);
-                else if (m == 'i') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR THE ITEMS< NO IDEA WHAT TO DO HERE BENNETT
-                else tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR CLASSES, NO IDEA WHAT DO
+                if (m == 'B') tile = determineTile("boulder", y, x);
+                else if (m == 'C') tile = determineTile("manmadeCobble", y, x);
+                else if (m == 'i') tile = determineTile("item", y, x); //HELP: WORKS FOR THE ITEMS< NO IDEA WHAT TO DO HERE BENNETT
+                else tile = determineTile("grass", y, x);
 
                 SML.get((i * yMult) + startingY).set((j * xMult) + startingX, tile);
             }
         }
     }
 
-    public void town () {
-        townList = new ArrayList<>(); // MAKES THE TOWN MEGA LIST
+    public void generatePremade (String path) {
+        List<char[]> premadeList = new ArrayList<>(); // MAKES THE PREMADE MEGA LIST
 
         try {
-            File file = new File("../src/com/mygdx/game/Map/town.txt");
+            File file = new File(path);
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {
                 char[] line = scanner.nextLine().toCharArray();
-                townList.add(line);
+                premadeList.add(line);
             }
 
         } catch (FileNotFoundException e) {
@@ -175,19 +180,19 @@ public class Map {
 
 
         //decides how to flip the maze to give it a more random feel
-        for (int i = 0; i < townList.size(); i++) {
+        for (int i = 0; i < premadeList.size(); i++) {
             int y = (i * yMult) + startingY;
-            for (int j = 0; j < townList.get(i).length; j++) {
+            for (int j = 0; j < premadeList.get(i).length; j++) {
                 int x = (j * xMult) + startingX;
-                char m = townList.get(i)[j];
+                char m = premadeList.get(i)[j];
                 Tile tile;
-                if (m == 'B') tile = new BoulderTile("boulder", y, x, size);
-                else if (m == 'C') tile = new DefaultTile("manmadeCobble", y, x, size);
-                else if (m == 'G') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: grass tiles go here
-                else if (m == 'D') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: dirt tiles go here
-                else if (m == 'w') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: wooden tiles go here
-                else if (m == 'i') tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR THE ITEMS< NO IDEA WHAT TO DO HERE BENNETT
-                else tile = new DefaultTile("manmadeCobble", y, x, size); //HELP: WORKS FOR CLASSES, NO IDEA WHAT DO
+                if (m == 'B') tile = determineTile("boulder", y, x);
+                else if (m == 'C') tile = determineTile("manmadeCobble", y, x);
+                else if (m == 'G') tile = determineTile("grass", y, x);
+                else if (m == 'D') tile = determineTile("dirt", y, x);
+                else if (m == 'w') tile = determineTile("wood", y, x); 
+                else if (m == 'i') tile = determineTile("item", y, x);
+                else tile = determineTile("manmadeCobble", y, x); 
 
                 SML.get((i * yMult) + startingY).set((j * xMult) + startingX, tile);
             }

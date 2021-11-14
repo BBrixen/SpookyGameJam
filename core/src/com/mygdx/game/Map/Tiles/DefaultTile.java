@@ -1,4 +1,4 @@
-package com.mygdx.game.Map;
+package com.mygdx.game.Map.Tiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;

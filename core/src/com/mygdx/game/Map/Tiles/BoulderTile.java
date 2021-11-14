@@ -1,11 +1,10 @@
-package com.mygdx.game.Map;
+package com.mygdx.game.Map.Tiles;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entities.RenderingEntities.Textures;
 
-public class BoulderTile extends Tile{
+public class BoulderTile extends Tile {
 
     private final Sprite background;
 
@@ -13,7 +12,8 @@ public class BoulderTile extends Tile{
         super(type, row, col, size);
         passable = false;
         primaryScale = 1.25f;
-        float yoffset = 32;
+        float yoffset = 8;
+        float xoffset = -6;
 
         // handling background
         background = new Sprite(Textures.grass);
@@ -22,7 +22,7 @@ public class BoulderTile extends Tile{
         // handling sprite
         sprite = new Sprite(Textures.boulder);
         sprite.setScale(primaryScale);
-        sprite.setPosition(x, y + yoffset);
+        sprite.setPosition(x + xoffset, y + yoffset);
     }
 
     @Override
