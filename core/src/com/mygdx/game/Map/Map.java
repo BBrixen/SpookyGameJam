@@ -29,7 +29,7 @@ public class Map {
         virus(10, 1f,0.01f, "dirt");
         virus(50, 1f,0.01f,"forest");
         virus(100, 1f,0.1f,"cobble");
-        virus(50, 1f, 0.1f, "boulder");
+        virus(50, 1f, 0.2f, "boulder");
 
         generatePremade("../src/com/mygdx/game/Map/maze.txt");
         generatePremade("../src/com/mygdx/game/Map/town.txt");
@@ -74,15 +74,25 @@ public class Map {
                 Pair<Integer, Integer> p3 = new Pair<>(x - 1, y);
                 Pair<Integer, Integer> p4 = new Pair<>(x, y - 1);
 
-                if (!usedSpaces.contains(p1)) theCurrentQueue.add(p1);
-                if (!usedSpaces.contains(p2)) theCurrentQueue.add(p2);
-                if (!usedSpaces.contains(p3)) theCurrentQueue.add(p3);
-                if (!usedSpaces.contains(p4)) theCurrentQueue.add(p4);
+                if (!usedSpaces.contains(p1)) {
+                    theCurrentQueue.add(p1);
+                    usedSpaces.add(p1);
+                }
 
-                usedSpaces.add(p1);
-                usedSpaces.add(p2);
-                usedSpaces.add(p3);
-                usedSpaces.add(p4);
+                if (!usedSpaces.contains(p2)) {
+                    theCurrentQueue.add(p2);
+                    usedSpaces.add(p2);
+                }
+
+                if (!usedSpaces.contains(p3)) {
+                    theCurrentQueue.add(p3);
+                    usedSpaces.add(p3);
+                }
+
+                if (!usedSpaces.contains(p4)) {
+                    theCurrentQueue.add(p4);
+                    usedSpaces.add(p4);
+                }
             }
         }
     }
