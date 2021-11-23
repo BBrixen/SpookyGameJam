@@ -8,8 +8,8 @@ public class BoulderTile extends Tile {
 
     private final Sprite background;
 
-    public BoulderTile(String type, int row, int col, int size) {
-        super(type, row, col, size);
+    public BoulderTile(String type, int row, int col) {
+        super(type, row, col);
         passable = false;
         primaryScale = 1.25f;
         float yoffset = 8;

@@ -11,8 +11,8 @@ public class TreeTile extends Tile {
     private final float yoffset;
     private final boolean flipped;
 
-    public TreeTile(String type, int row, int col, int size, boolean flipped) {
-        super(type, row, col, size);
+    public TreeTile(String type, int row, int col, boolean flipped) {
+        super(type, row, col);
         this.flipped = flipped;
         yoffset = 32;
         primaryScale = 1.5f;

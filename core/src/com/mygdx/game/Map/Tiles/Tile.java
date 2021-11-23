@@ -2,6 +2,7 @@ package com.mygdx.game.Map.Tiles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Map.Map;
 
 public abstract class Tile {
 
@@ -10,12 +11,20 @@ public abstract class Tile {
     protected float primaryScale, x, y;
     protected boolean passable;
 
-    public Tile(String type, int row, int col, int size) {
+    public Tile(String type, int row, int col) {
         this.type = type;
         passable = true;
         primaryScale = 1f;
-        x = (col - size / 2f) * 64;
-        y = (row - size / 2f) * 64;
+        x = Map.mapIndexToPlayerPosition(col);
+        y = Map.mapIndexToPlayerPosition(row);
+    }
+
+    public boolean isPassable() {
+        return passable;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public abstract void updateType(String type);

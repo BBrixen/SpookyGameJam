@@ -12,7 +12,7 @@ public class Map {
 
     public List<List<Tile>> SML;
     private final Random random;
-    public final int size = 500;
+    public static final int size = 500;
 
     public Map(long seed) {
         //makes the map size by size char wide
@@ -22,7 +22,7 @@ public class Map {
         for (int i = 0; i < size; i++) {
             List<Tile> eachLineList = new ArrayList<>();
             for (int j = 0; j < size; j++) {
-                eachLineList.add(new DefaultTile("grass", i, j, size));
+                eachLineList.add(new DefaultTile("grass", i, j));
             }
             SML.add(eachLineList);
         }
@@ -35,11 +35,18 @@ public class Map {
         generatePremade("../src/com/mygdx/game/Map/town.txt");
     }
 
-    public int playerPositionToMapIndex(float pos) {
-        return (int) pos  / 64 + size / 2;
+    public static int playerYToMapRow(float pos) {
+        return playerPositionToMapIndex(pos);
+    }
+    public static int playerXToMapCol(float pos) {
+        return playerPositionToMapIndex(pos+24);
     }
 
-    public float mapIndexToPlayerPosition(int index) {
+    public static int playerPositionToMapIndex(float pos) {
+        return (int) ( (pos / 64) + size / 2 );
+    }
+
+    public static float mapIndexToPlayerPosition(int index) {
         return (index - size/2f) * 64;
     }
 
@@ -99,7 +106,7 @@ public class Map {
 
     public Tile determineTile(String type, int row, int col) {
         // takes type and returns a new tile object with needed type
-        if (type.equals("boulder")) return new BoulderTile(type, row, col, size);
+        if (type.equals("boulder")) return new BoulderTile(type, row, col);
 
         if (type.equals("forest")) {
             float treeTypeRandomizer = random.nextFloat();
@@ -108,12 +115,12 @@ public class Map {
             else type = "tree3";
 
             boolean treeFlipped = random.nextFloat() > 0.5;
-            return new TreeTile(type, row, col, size, treeFlipped);
+            return new TreeTile(type, row, col, treeFlipped);
         }
 
-        if (type.equals("item")) return new ItemTile(type, row, col, size);
+        if (type.equals("item")) return new ItemTile(type, row, col);
 
-        return new DefaultTile(type, row, col, size);
+        return new DefaultTile(type, row, col);
     }
 
     public void generatePremade (String path) {

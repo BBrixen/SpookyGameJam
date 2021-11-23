@@ -33,7 +33,7 @@ public class ClientGame extends ApplicationAdapter {
 	private HashMap<Integer, PlayerCharacter> playerToSprite = new HashMap<>();
 	private Music nightMusic;
 	private Player thisPlayer;
-	private Map map;
+	public static Map map;
 
 	// multiplayer stuff
 	private final boolean multiplayer = false;
@@ -78,7 +78,7 @@ public class ClientGame extends ApplicationAdapter {
 			ServerGame game = new ServerGame(null, 1, false);
 			currentGameData = game.gameData;
 			game.playerJoins(new Player(0));
-			this.map = game.map;
+			map = game.map;
 		}
 	}
 
@@ -134,7 +134,7 @@ public class ClientGame extends ApplicationAdapter {
 
 		// handling inputs
 		InputHandler.handleKeyDown(thisPlayer, clientNetworker, currentGameData,
-					multiplayer, character, this.map);
+					multiplayer, character, map);
 
 		// rendering stuff
 		batch.setProjectionMatrix(camera.combined);
@@ -146,16 +146,16 @@ public class ClientGame extends ApplicationAdapter {
 	}
 
 	public void renderMap() {
-		if (this.map == null) return;
+		if (map == null) return;
 
-		int row = (int) (character.getPositionY()/64) + (this.map.size/2);
-		int col = (int) (character.getPositionX()/64) + (this.map.size/2);
+		int row = Map.playerYToMapRow(character.getPositionY());
+		int col = Map.playerXToMapCol(character.getPositionX());
 
 		for (int r = row + 10; r > row - 10 && row > 0; r --) {
-			if (r >= this.map.size) continue;
-			for (int c = col - 10; c < col + 10 && c < this.map.size; c ++) {
+			if (r >= Map.size) continue;
+			for (int c = col - 10; c < col + 10 && c < Map.size; c ++) {
 				if (c < 0) continue;
-				Tile tile = this.map.SML.get(r).get(c);
+				Tile tile = map.SML.get(r).get(c);
 				tile.render(batch);
 			}
 		}
@@ -169,6 +169,6 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void updateGameData(GameData gameData) {
 		this.currentGameData = gameData;
-		if (this.map == null) this.map = new Map(gameData.seed);
+		if (map == null) map = new Map(gameData.seed);
 	}
 }
