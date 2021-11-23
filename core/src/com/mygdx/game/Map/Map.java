@@ -32,7 +32,7 @@ public class Map {
         virus(50, 1f, 0.2f, "boulder");
 
         generatePremade("../src/com/mygdx/game/Map/maze.txt");
-        generatePremade("../src/com/mygdx/game/Map/town.txt");
+        //generatePremade("../src/com/mygdx/game/Map/town.txt");
     }
 
     public static int playerYToMapRow(float pos) {
