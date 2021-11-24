@@ -134,7 +134,7 @@ public class ClientGame extends ApplicationAdapter {
 
 		// handling inputs
 		InputHandler.handleKeyDown(thisPlayer, clientNetworker, currentGameData,
-					multiplayer, character, map);
+					multiplayer, character);
 
 		// rendering stuff
 		batch.setProjectionMatrix(camera.combined);

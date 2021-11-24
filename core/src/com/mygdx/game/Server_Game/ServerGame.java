@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class ServerGame {
 
     public GameData gameData;
-    private ServerNetworker server;
-    private boolean multiplayer;
+    private final ServerNetworker server;
+    private final boolean multiplayer;
     public Map map;
 
     public ServerGame(ServerNetworker server, int maxPlayers, boolean multiplayer) {

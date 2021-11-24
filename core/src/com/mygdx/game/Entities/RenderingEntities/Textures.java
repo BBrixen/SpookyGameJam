@@ -16,6 +16,7 @@ public class Textures {
     public static Texture tree2 = new Texture(Gdx.files.internal("Sprites/tree2.png"));
     public static Texture tree3 = new Texture(Gdx.files.internal("Sprites/tree3.png"));
 
+    // entity textures
     public static Texture player = new Texture(Gdx.files.internal("Sprites/cat.png"));
 
 }

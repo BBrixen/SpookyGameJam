@@ -8,7 +8,7 @@ import com.mygdx.game.Server_Game.CollisionHandler;
 
 public class PlayerCharacter extends Actor {
 
-    private Sprite characterSprite;
+    private final Sprite characterSprite;
     private OrthographicCamera camera;
     private float positionX, positionY, speedX, speedY;
 

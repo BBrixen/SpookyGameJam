@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.Entities.RenderingEntities.PlayerCharacter;
 import com.mygdx.game.Entities.GameEntities.Player;
-import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Networking.Server_Data.NetworkData;
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class InputHandler {
     private static HashMap<Integer, Boolean> keyPresses = null;
 
     public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData,
-                                     boolean multiplayer, PlayerCharacter character, Map map) {
+                                     boolean multiplayer, PlayerCharacter character) {
         // checks and initializing keypresses
         if (p == null) return;
         if (gameData == null || !gameData.allPlayersConnected()) return;
