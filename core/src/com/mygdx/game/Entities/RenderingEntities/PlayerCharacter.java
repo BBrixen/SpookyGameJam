@@ -12,7 +12,6 @@ public class PlayerCharacter extends Actor {
     private Sprite characterSprite;
     private OrthographicCamera camera;
     private float positionX, positionY, speedX, speedY;
-    private Map map;
 
     public PlayerCharacter() {
         positionX = 0;
@@ -27,10 +26,6 @@ public class PlayerCharacter extends Actor {
     public PlayerCharacter(OrthographicCamera camera) {
         this();
         this.camera = camera;
-    }
-
-    public void bindMap(Map map) {
-        this.map = map;
     }
 
     @Override
