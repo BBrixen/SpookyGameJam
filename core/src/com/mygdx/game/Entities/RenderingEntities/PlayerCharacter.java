@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.Map.Map;
 import com.mygdx.game.Server_Game.CollisionHandler;
 
 public class PlayerCharacter extends Actor {
