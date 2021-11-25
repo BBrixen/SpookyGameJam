@@ -3,18 +3,21 @@ package com.mygdx.game.Map;
 import com.mygdx.game.Entities.RenderingEntities.Textures;
 import com.mygdx.game.Map.Tiles.*;
 import javafx.util.Pair;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.Math;
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.HashSet;
 
 public class Map {
 
-    public List<List<Tile>> SML;
+    public ArrayList<ArrayList<Tile>> SML;
     private final Random random;
     public static final int size = 500;
-    private boolean isServer;
+    private final boolean isServer;
 
     public Map(long seed, boolean server) {
         isServer = server;
@@ -25,7 +28,7 @@ public class Map {
         random = new Random(seed);
 
         for (int i = 0; i < size; i++) {
-            List<Tile> eachLineList = new ArrayList<>();
+            ArrayList<Tile> eachLineList = new ArrayList<>();
             for (int j = 0; j < size; j++) {
                 eachLineList.add(new DefaultTile("grass", i, j, server));
             }
@@ -57,8 +60,8 @@ public class Map {
 
     public void virus(int quantity, float spreadRate, float decayRate, String infectionType) {
         for (int i = 0; i < quantity; i++) {
-            Queue<Pair<Integer, Integer>> theCurrentQueue = new LinkedList<>();
-            Set<Pair<Integer, Integer>> usedSpaces = new HashSet<>();
+            LinkedList<Pair<Integer, Integer>> theCurrentQueue = new LinkedList<>();
+            HashSet<Pair<Integer, Integer>> usedSpaces = new HashSet<>();
 
             //gets random start point
             int startingX = Math.round(random.nextFloat() * (size-2));
@@ -129,7 +132,7 @@ public class Map {
     }
 
     public void generatePremade (String path) {
-        List<char[]> premadeList = new ArrayList<>(); // MAKES THE PREMADE MEGA LIST
+        ArrayList<char[]> premadeList = new ArrayList<>(); // MAKES THE PREMADE MEGA LIST
 
         try {
             File file = new File(path);
