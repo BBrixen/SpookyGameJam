@@ -6,14 +6,16 @@ import com.mygdx.game.Entities.RenderingEntities.Textures;
 
 public class BoulderTile extends Tile {
 
-    private final Sprite background;
+    private Sprite background;
 
-    public BoulderTile(String type, int row, int col) {
+    public BoulderTile(String type, int row, int col, boolean server) {
         super(type, row, col);
         passable = false;
         primaryScale = 1.25f;
         float yoffset = 8;
         float xoffset = -6;
+
+        if (server) return;
 
         // handling background
         background = new Sprite(Textures.grass);

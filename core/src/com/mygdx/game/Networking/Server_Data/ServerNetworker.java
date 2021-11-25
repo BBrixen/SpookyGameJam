@@ -1,10 +1,8 @@
 package com.mygdx.game.Networking.Server_Data;
 
-
 import com.mygdx.game.Server_Game.GameData;
 import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Server_Game.ServerGame;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -148,7 +146,7 @@ public class ServerNetworker {
             Thread.sleep(20);
         }
         this.game.gameData = data.getGameData();
-        System.out.println("GAME UPDATED WITH NEW DATA: " + game.gameData.players.get(0).getSpeedX());
+//        System.out.println("GAME UPDATED WITH NEW DATA: " + game.gameData.players.get(0).getSpeedX());
         // this will just call game functions, and the game will call
         // addToQueueAndSend when it is finished and ready to update the players
     }

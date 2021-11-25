@@ -11,6 +11,8 @@ public class CollisionHandler {
      * Modifies playercharacter to not run into an impassable object
      */
     public static void handleCollisions(float dTime, PlayerCharacter character) {
+        if (ClientGame.map == null) return;
+
         // we handle the row/col separately so that the player can slide along the edge of a collision boundary
         int rowBefore = Map.playerYToMapRow(character.getPositionY());
         int colBefore = Map.playerXToMapCol(character.getPositionX());

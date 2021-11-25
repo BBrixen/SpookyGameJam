@@ -7,15 +7,17 @@ import com.mygdx.game.Entities.RenderingEntities.Textures;
 
 public class TreeTile extends Tile {
 
-    private final Sprite background;
+    private Sprite background;
     private final float yoffset;
     private final boolean flipped;
 
-    public TreeTile(String type, int row, int col, boolean flipped) {
+    public TreeTile(String type, int row, int col, boolean flipped, boolean server) {
         super(type, row, col);
         this.flipped = flipped;
         yoffset = 32;
         primaryScale = 1.5f;
+
+        if (server) return;
 
         // handling background
         background = new Sprite(Textures.dirt);

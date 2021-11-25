@@ -29,7 +29,7 @@ public class ServerGame {
             System.out.println("all clients connected");
 
             // make map here
-            map = new Map(gameData.seed);
+            map = new Map(gameData.seed, true);
 
             if (multiplayer) { // send out data to all clients
                 server.continuallyRecieveData();

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Entities.RenderingEntities.Textures;
 import com.mygdx.game.Map.Tiles.Tile;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
 import com.mygdx.game.Entities.RenderingEntities.PlayerCharacter;
@@ -36,7 +37,7 @@ public class ClientGame extends ApplicationAdapter {
 	public static Map map;
 
 	// multiplayer stuff
-	private final boolean multiplayer = false;
+	private final boolean multiplayer = true;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
@@ -44,6 +45,8 @@ public class ClientGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		Textures.loadTextures(); // we have to load the textures before using any of them inside the map or entities
+
 		// making camera
 		float w, h;
 		w = Gdx.graphics.getWidth();
@@ -169,6 +172,6 @@ public class ClientGame extends ApplicationAdapter {
 
 	public void updateGameData(GameData gameData) {
 		this.currentGameData = gameData;
-		if (map == null) map = new Map(gameData.seed);
+		if (map == null) map = new Map(gameData.seed, false);
 	}
 }
