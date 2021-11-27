@@ -29,7 +29,9 @@ public class ServerGame {
             System.out.println("all clients connected");
 
             // make map here
-            map = new Map(gameData.seed, true);
+            map = new Map(gameData.seed, multiplayer);
+            // we pass the state of multiplayer bc if its false then
+            // we want to fun it as a client (when we would normally pass false)
 
             if (multiplayer) { // send out data to all clients
                 server.continuallyRecieveData();
