@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Player extends Entity implements Serializable {
 
-    private int pID;
+    private final int pID;
 
     public Player(int id) {
         super();
@@ -13,9 +13,5 @@ public class Player extends Entity implements Serializable {
 
     public int getId() {
         return pID;
-    }
-
-    public void setId(int id) {
-        this.pID = id;
     }
 }

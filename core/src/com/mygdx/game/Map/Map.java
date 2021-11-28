@@ -1,28 +1,36 @@
 package com.mygdx.game.Map;
 
+import com.mygdx.game.Entities.RenderingEntities.Textures;
 import com.mygdx.game.Map.Tiles.*;
 import javafx.util.Pair;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.Math;
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.HashSet;
 
 public class Map {
 
-    public List<List<Tile>> SML;
+    public ArrayList<ArrayList<Tile>> SML;
     private final Random random;
     public static final int size = 500;
+    private final boolean isServer;
 
-    public Map(long seed) {
+    public Map(long seed, boolean server) {
+        isServer = server;
+        if (server) Textures.loadTextures();
+
         //makes the map size by size char wide
         SML = new ArrayList<>();
         random = new Random(seed);
 
         for (int i = 0; i < size; i++) {
-            List<Tile> eachLineList = new ArrayList<>();
+            ArrayList<Tile> eachLineList = new ArrayList<>();
             for (int j = 0; j < size; j++) {
-                eachLineList.add(new DefaultTile("grass", i, j));
+                eachLineList.add(new DefaultTile("grass", i, j, server));
             }
             SML.add(eachLineList);
         }
@@ -52,8 +60,8 @@ public class Map {
 
     public void virus(int quantity, float spreadRate, float decayRate, String infectionType) {
         for (int i = 0; i < quantity; i++) {
-            Queue<Pair<Integer, Integer>> theCurrentQueue = new LinkedList<>();
-            Set<Pair<Integer, Integer>> usedSpaces = new HashSet<>();
+            LinkedList<Pair<Integer, Integer>> theCurrentQueue = new LinkedList<>();
+            HashSet<Pair<Integer, Integer>> usedSpaces = new HashSet<>();
 
             //gets random start point
             int startingX = Math.round(random.nextFloat() * (size-2));
@@ -106,7 +114,7 @@ public class Map {
 
     public Tile determineTile(String type, int row, int col) {
         // takes type and returns a new tile object with needed type
-        if (type.equals("boulder")) return new BoulderTile(type, row, col);
+        if (type.equals("boulder")) return new BoulderTile(type, row, col, isServer);
 
         if (type.equals("forest")) {
             float treeTypeRandomizer = random.nextFloat();
@@ -115,16 +123,16 @@ public class Map {
             else type = "tree3";
 
             boolean treeFlipped = random.nextFloat() > 0.5;
-            return new TreeTile(type, row, col, treeFlipped);
+            return new TreeTile(type, row, col, treeFlipped, isServer);
         }
 
         if (type.equals("item")) return new ItemTile(type, row, col);
 
-        return new DefaultTile(type, row, col);
+        return new DefaultTile(type, row, col, isServer);
     }
 
     public void generatePremade (String path) {
-        List<char[]> premadeList = new ArrayList<>(); // MAKES THE PREMADE MEGA LIST
+        ArrayList<char[]> premadeList = new ArrayList<>(); // MAKES THE PREMADE MEGA LIST
 
         try {
             File file = new File(path);
@@ -143,9 +151,8 @@ public class Map {
         //gets some random coords to start the maze at
         int startingX = Math.round(random.nextFloat() * (size-45));
         int startingY = Math.round(random.nextFloat() * (size-45));
-        // this is for testing the maze
-        startingY = 250;
-        startingX = 250;
+        startingY = 250; // for debug
+        startingX = 250; // for debug
         int yMult = 1;
         if (random.nextFloat() > 0.5) yMult = -1;
         int xMult = 1;

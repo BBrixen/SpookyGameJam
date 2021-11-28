@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class ServerGame {
 
     public GameData gameData;
-    private ServerNetworker server;
-    private boolean multiplayer;
+    private final ServerNetworker server;
+    private final boolean multiplayer;
     public Map map;
 
     public ServerGame(ServerNetworker server, int maxPlayers, boolean multiplayer) {
@@ -29,7 +29,9 @@ public class ServerGame {
             System.out.println("all clients connected");
 
             // make map here
-            map = new Map(gameData.seed);
+            map = new Map(gameData.seed, multiplayer);
+            // we pass the state of multiplayer bc if its false then
+            // we want to fun it as a client (when we would normally pass false)
 
             if (multiplayer) { // send out data to all clients
                 server.continuallyRecieveData();

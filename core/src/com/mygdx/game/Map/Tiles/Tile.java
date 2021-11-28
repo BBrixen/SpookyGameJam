@@ -23,10 +23,6 @@ public abstract class Tile {
         return passable;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public abstract void updateType(String type);
 
     public abstract void render(SpriteBatch batch);

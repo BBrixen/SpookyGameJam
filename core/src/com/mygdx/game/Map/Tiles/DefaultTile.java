@@ -11,8 +11,9 @@ public class DefaultTile extends Tile {
      * This creates a map tile, this is mostly to help with map rendering and sanity.
      * Default Tile represents dirt, grass, cobble
      */
-    public DefaultTile(String type, int row, int col) {
+    public DefaultTile(String type, int row, int col, boolean server) {
         super(type, row, col);
+        if (server) return; // we dont want to create a sprite on the server side
         updateType(type);
     }
 

@@ -4,15 +4,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.Map.Map;
 import com.mygdx.game.Server_Game.CollisionHandler;
 
 public class PlayerCharacter extends Actor {
 
-    private Sprite characterSprite;
+    private final Sprite characterSprite;
     private OrthographicCamera camera;
     private float positionX, positionY, speedX, speedY;
-    private Map map;
 
     public PlayerCharacter() {
         positionX = 0;
@@ -27,10 +25,6 @@ public class PlayerCharacter extends Actor {
     public PlayerCharacter(OrthographicCamera camera) {
         this();
         this.camera = camera;
-    }
-
-    public void bindMap(Map map) {
-        this.map = map;
     }
 
     @Override

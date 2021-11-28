@@ -6,16 +6,26 @@ import com.badlogic.gdx.graphics.Texture;
 public class Textures {
 
     // map textures
-    public static Texture grass = new Texture(Gdx.files.internal("Sprites/GroundTiles/grass.png"));
-    public static Texture dirt = new Texture(Gdx.files.internal("Sprites/GroundTiles/dirt.png"));
-    public static Texture wood = new Texture(Gdx.files.internal("Sprites/GroundTiles/wood.png"));
-    public static Texture boulder = new Texture(Gdx.files.internal("Sprites/boulder.png"));
-    public static Texture cobble = new Texture(Gdx.files.internal("Sprites/GroundTiles/cobble.png"));
-    public static Texture manmadeCobble = new Texture(Gdx.files.internal("Sprites/GroundTiles/cobble_premade.png"));
-    public static Texture tree = new Texture(Gdx.files.internal("Sprites/tree.png"));
-    public static Texture tree2 = new Texture(Gdx.files.internal("Sprites/tree2.png"));
-    public static Texture tree3 = new Texture(Gdx.files.internal("Sprites/tree3.png"));
+    public static Texture grass, dirt, wood, boulder, cobble, manmadeCobble, tree, tree2, tree3;
 
-    public static Texture player = new Texture(Gdx.files.internal("Sprites/cat.png"));
+    // entity textures
+    public static Texture player;
+
+    public static void loadTextures() {
+        try {
+            grass = new Texture(Gdx.files.internal("Sprites/GroundTiles/grass.png"));
+            dirt = new Texture(Gdx.files.internal("Sprites/GroundTiles/dirt.png"));
+            wood = new Texture(Gdx.files.internal("Sprites/GroundTiles/wood.png"));
+            boulder = new Texture(Gdx.files.internal("Sprites/boulder.png"));
+            cobble = new Texture(Gdx.files.internal("Sprites/GroundTiles/cobble.png"));
+            manmadeCobble = new Texture(Gdx.files.internal("Sprites/GroundTiles/cobble_premade.png"));
+            tree = new Texture(Gdx.files.internal("Sprites/tree.png"));
+            tree2 = new Texture(Gdx.files.internal("Sprites/tree2.png"));
+            tree3 = new Texture(Gdx.files.internal("Sprites/tree3.png"));
+            player = new Texture(Gdx.files.internal("Sprites/cat.png"));
+        } catch (NullPointerException e) {
+            System.out.println("the server failed to initialize the textures");
+        }
+    }
 
 }
