@@ -40,7 +40,7 @@ public class Map {
         virus(50, 1f, 0.2f, "boulder");
 
         generatePremade("../src/com/mygdx/game/Map/maze.txt");
-        generatePremade("../src/com/mygdx/game/Map/town.txt");
+        //generatePremade("../src/com/mygdx/game/Map/town.txt");
     }
 
     public static int playerYToMapRow(float pos) {
@@ -149,10 +149,8 @@ public class Map {
         }
 
         //gets some random coords to start the maze at
-        int startingX = Math.round(random.nextFloat() * (size-45));
-        int startingY = Math.round(random.nextFloat() * (size-45));
-        startingY = 250; // for debug
-        startingX = 250; // for debug
+        int startingX = Math.round(random.nextFloat() * (size-5-premadeList.get(0).length));
+        int startingY = Math.round(random.nextFloat() * (size-5-premadeList.size()));
         int yMult = 1;
         if (random.nextFloat() > 0.5) yMult = -1;
         int xMult = 1;
