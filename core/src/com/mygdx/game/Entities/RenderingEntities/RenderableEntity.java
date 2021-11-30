@@ -21,7 +21,8 @@ public abstract class RenderableEntity extends Actor {
     @Override
     public void act(float dTime) {
         gameEntity.update(dTime);
-        sprite.setFlip(gameEntity.getSpeedX() < 0, false);
+        if (gameEntity.getSpeedX() < 0) sprite.setFlip(true, false);
+        if (gameEntity.getSpeedX() > 0) sprite.setFlip(false, false);
         sprite.setPosition(this.gameEntity.getX(), this.gameEntity.getY());
     }
 
