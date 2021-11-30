@@ -14,13 +14,14 @@ public abstract class RenderableEntity extends Actor {
     }
 
     @Override
-    public void draw(Batch batch, float alpha){
+    public void draw(Batch batch, float alpha) {
         sprite.draw(batch, alpha);
     }
 
     @Override
-    public void act(float dTime){
+    public void act(float dTime) {
         gameEntity.update(dTime);
+        sprite.setFlip(gameEntity.getSpeedX() < 0, false);
         sprite.setPosition(this.gameEntity.getX(), this.gameEntity.getY());
     }
 

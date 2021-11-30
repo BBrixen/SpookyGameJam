@@ -110,7 +110,7 @@ public class ServerNetworker {
                 } catch (IOException e) { e.printStackTrace(); }
                 isSending = false;
             }
-        }, 0, 100, TimeUnit.MILLISECONDS);
+        }, 0, 10, TimeUnit.MILLISECONDS);
     }
 
     public void continuallyRecieveDataFromClient(Socket client_socket) {
@@ -143,7 +143,7 @@ public class ServerNetworker {
 
     public void handleIncomingData(NetworkData data) throws InterruptedException {
         if (isSending) {
-            Thread.sleep(20);
+            Thread.sleep(2);
         }
         this.game.gameData = data.getGameData();
 //        System.out.println("GAME UPDATED WITH NEW DATA: " + game.gameData.players.get(0).getSpeedX());
