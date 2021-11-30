@@ -1,76 +1,29 @@
 package com.mygdx.game.Entities.RenderingEntities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.Server_Game.CollisionHandler;
+import com.mygdx.game.Entities.GameEntities.Player;
 
-public class PlayerCharacter extends Actor {
+public class PlayerCharacter extends RenderableEntity {
 
-    private final Sprite characterSprite;
     private OrthographicCamera camera;
-    private float positionX, positionY, speedX, speedY;
 
-    public PlayerCharacter() {
-        positionX = 0;
-        positionY = 0;
-        speedX = 0;
-        speedY = 0;
-
-        characterSprite = new Sprite(Textures.player);
-        characterSprite.setScale(1.25f);
+    public PlayerCharacter(int pID) {
+        super();
+        gameEntity = new Player(pID);
+        sprite = new Sprite(Textures.player);
+        sprite.setScale(1.25f);
     }
 
-    public PlayerCharacter(OrthographicCamera camera) {
-        this();
+    public PlayerCharacter(int pID, OrthographicCamera camera) {
+        this(pID);
         this.camera = camera;
     }
 
     @Override
-    public void draw(Batch batch, float alpha){
-        characterSprite.draw(batch, alpha);
-    }
-
-    @Override
     public void act(float dTime){
-        CollisionHandler.handleCollisions(dTime, this);
-        characterSprite.setPosition(this.positionX, this.positionY);
+        super.act(dTime);
         if (this.camera != null)
-            this.camera.position.set(this.positionX, this.positionY, 0);
-    }
-
-    public void setSpeedX(float speedX) {
-        this.speedX = speedX;
-        if (speedX < 0) characterSprite.setFlip(true, false);
-        if (speedX > 0) characterSprite.setFlip(false, false);
-    }
-
-    public void setSpeedY(float speedY) {
-        this.speedY = speedY;
-    }
-
-    public void setPositionX(float positionX) {
-        this.positionX = positionX;
-    }
-
-    public void setPositionY(float positionY) {
-        this.positionY = positionY;
-    }
-
-    public float getPositionX() {
-        return positionX;
-    }
-
-    public float getPositionY() {
-        return positionY;
-    }
-
-    public float getSpeedX() {
-        return speedX;
-    }
-
-    public float getSpeedY() {
-        return speedY;
+            this.camera.position.set(this.gameEntity.getX(), this.gameEntity.getY(), 0);
     }
 }

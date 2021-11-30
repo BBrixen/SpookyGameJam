@@ -1,18 +1,15 @@
 package com.mygdx.game.desktop;
 
-import com.mygdx.game.Networking.Server_Data.ServerNetworker;
-
-import java.io.IOException;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.mygdx.game.Server_Game.ServerDisplay;
 
 public class ServerLauncher {
 
     public static void main(String[] args) {
-        int players = 2;
-        try {
-            ServerNetworker server = new ServerNetworker(players);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.foregroundFPS = 10;
+        new LwjglApplication(new ServerDisplay(), config);
     }
 
 }

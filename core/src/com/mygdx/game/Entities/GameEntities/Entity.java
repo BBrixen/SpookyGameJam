@@ -1,17 +1,23 @@
 package com.mygdx.game.Entities.GameEntities;
 
+import com.mygdx.game.Server_Game.CollisionHandler;
+
 import java.io.Serializable;
 
 public abstract class Entity implements Serializable {
 
-    private float x, y;
-    private float speedX, speedY;
+    protected float x, y;
+    protected float speedX, speedY;
 
     public Entity() {
         this.x = 0;
         this.y = 0;
         this.speedX = 0;
         this.speedY = 0;
+    }
+
+    public void update(float dTime) {
+        CollisionHandler.handleCollisions(dTime, this); // updates x and y values
     }
 
     public float getX() {

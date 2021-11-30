@@ -18,8 +18,9 @@ public class InputHandler {
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;
 
-    public static void handleKeyDown(Player p, ClientNetworker sender, GameData gameData,
+    public static void handleKeyDown(ClientNetworker sender, GameData gameData,
                                      boolean multiplayer, PlayerCharacter character) {
+        Player p = (Player) character.getGameEntity();
         // checks and initializing keypresses
         if (p == null) return;
         if (gameData == null || !gameData.allPlayersConnected()) return;
@@ -42,12 +43,8 @@ public class InputHandler {
             deltaX *= diagonalMultiplier;
         }
 
-        character.setSpeedX(deltaX);
-        character.setSpeedY(deltaY);
         p.setSpeedX(deltaX);
         p.setSpeedY(deltaY);
-        p.setX(character.getPositionX());
-        p.setY(character.getPositionY());
         if (multiplayer) {
             try {
                 sender.sendData(new NetworkData(gameData));

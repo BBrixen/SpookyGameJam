@@ -33,11 +33,10 @@ public class ClientGame extends ApplicationAdapter {
 	private PlayerCharacter character;
 	private HashMap<Integer, PlayerCharacter> playerToSprite = new HashMap<>();
 	private Music nightMusic;
-	private Player thisPlayer;
 	public static Map map;
 
 	// multiplayer stuff
-	private final boolean multiplayer = false;
+	private final boolean multiplayer = true;
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
@@ -60,7 +59,7 @@ public class ClientGame extends ApplicationAdapter {
 		stage = new Stage(viewport, batch);
 
 		// adding character sprites
-		character = new PlayerCharacter(camera);
+		character = new PlayerCharacter(pID, camera);
 		stage.addActor(character);
 
 		// loading sound, TURNED OFF FOR TESTING
@@ -90,8 +89,9 @@ public class ClientGame extends ApplicationAdapter {
 		List<Player> players = currentGameData.players;
 		int numPlayers = players.size();
 
-		if (pID == -1) pID = numPlayers - 1;
-		thisPlayer = players.get(pID);
+		if (pID == -1) {
+			pID = numPlayers - 1;
+		}
 
 		if (! this.currentGameData.allPlayersConnected()) return;
 
@@ -103,7 +103,7 @@ public class ClientGame extends ApplicationAdapter {
 				if (player.getId() == pID) {
 					playerToSprite.put(pID, character);
 				} else {
-					PlayerCharacter otherCharacter = new PlayerCharacter();
+					PlayerCharacter otherCharacter = new PlayerCharacter(player.getId());
 					playerToSprite.put(player.getId(), otherCharacter);
 					stage.addActor(otherCharacter);
 				}
@@ -114,13 +114,7 @@ public class ClientGame extends ApplicationAdapter {
 		for (Player curPlayer : players) {
 			if (curPlayer.getId() == pID) continue; // dont affect current player bc the server gets all confused
 			PlayerCharacter sprite = playerToSprite.get(curPlayer.getId());
-			sprite.setSpeedX(curPlayer.getSpeedX());
-			sprite.setSpeedY(curPlayer.getSpeedY());
-			if (curPlayer.getSpeedX() == 0 && curPlayer.getSpeedY() == 0) {
-				sprite.setPositionX(curPlayer.getX());
-				sprite.setPositionY(curPlayer.getY());
-			}
-
+			sprite.setGameEntity(curPlayer); // changes it game entity state
 			playerToSprite.replace(curPlayer.getId(), sprite);
 		}
 	}
@@ -136,7 +130,7 @@ public class ClientGame extends ApplicationAdapter {
 		ScreenUtils.clear(90/255f, 230/255f, 80/255f, 1);
 
 		// handling inputs
-		InputHandler.handleKeyDown(thisPlayer, clientNetworker, currentGameData,
+		InputHandler.handleKeyDown(clientNetworker, currentGameData,
 					multiplayer, character);
 
 		// rendering stuff
@@ -151,8 +145,8 @@ public class ClientGame extends ApplicationAdapter {
 	public void renderMap() {
 		if (map == null) return;
 
-		int row = Map.playerYToMapRow(character.getPositionY());
-		int col = Map.playerXToMapCol(character.getPositionX());
+		int row = Map.playerYToMapRow(character.getGameEntity().getY());
+		int col = Map.playerXToMapCol(character.getGameEntity().getX());
 
 		for (int r = row + 10; r > row - 10 && row > 0; r --) {
 			if (r >= Map.size) continue;
