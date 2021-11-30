@@ -1,5 +1,6 @@
 package com.mygdx.game.Entities.GameEntities;
 
+import com.mygdx.game.Map.Map;
 import com.mygdx.game.Server_Game.CollisionHandler;
 
 import java.io.Serializable;
@@ -18,6 +19,10 @@ public abstract class Entity implements Serializable {
 
     public void update(float dTime) {
         CollisionHandler.handleCollisions(dTime, this); // updates x and y values
+    }
+
+    public void updateServer(float dTime, Map map) {
+        CollisionHandler.handleCollisionsServer(dTime, this, map);
     }
 
     public float getX() {

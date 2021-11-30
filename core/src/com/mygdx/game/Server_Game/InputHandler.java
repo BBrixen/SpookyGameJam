@@ -13,7 +13,7 @@ public class InputHandler {
     // server side
     // handles the input from an actor
 
-    public static final float defaultSpeed = 180.0f; // 64 speed should be about 1 tile per second
+    public static final float defaultSpeed = 120.0f; // 64 speed should be about 1 tile per second
     public static final float diagonalMultiplier =
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;
@@ -45,8 +45,11 @@ public class InputHandler {
 
         p.setSpeedX(deltaX);
         p.setSpeedY(deltaY);
+        character.setGameEntity(p);
+        gameData.players.set(p.getId(), p); // updates the gamedata to include modified player
         if (multiplayer) {
             try {
+//                System.out.println(gameData.players.get(0).getSpeedX());
                 sender.sendData(new NetworkData(gameData));
             } catch (IOException e) {
                 e.printStackTrace();

@@ -40,4 +40,31 @@ public class CollisionHandler {
         }
     }
 
+    public static void handleCollisionsServer(float dTime, Entity entity, Map map) {
+        // we handle the row/col separately so that the player can slide along the edge of a collision boundary
+        int rowBefore = Map.playerYToMapRow(entity.getY());
+        int colBefore = Map.playerXToMapCol(entity.getX());
+
+        // handling col (x)
+        float x = entity.getX();
+        float speedX = entity.getSpeedX();
+        x += speedX * dTime;
+
+        int colAfter = Map.playerXToMapCol(x);
+        Tile expectedPosition = map.SML.get(rowBefore).get(colAfter);
+        if (expectedPosition.isPassable()) {
+            entity.setX(x);
+        }
+
+        // handling row (y)
+        float y = entity.getY();
+        float speedY = entity.getSpeedY();
+        y += speedY*dTime;
+
+        int rowAfter = Map.playerYToMapRow(y);
+        expectedPosition = map.SML.get(rowAfter).get(colBefore);
+        if (expectedPosition.isPassable()) {
+            entity.setY(y);
+        }
+    }
 }

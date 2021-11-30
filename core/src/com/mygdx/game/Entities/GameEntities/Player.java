@@ -15,7 +15,7 @@ public class Player extends Entity implements Serializable {
         return pID;
     }
 
-    public void setpID(int pID) {
+    public void setId(int pID) {
         this.pID = pID;
     }
 

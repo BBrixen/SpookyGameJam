@@ -91,6 +91,7 @@ public class ClientGame extends ApplicationAdapter {
 
 		if (pID == -1) {
 			pID = numPlayers - 1;
+			((Player)character.getGameEntity()).setId(pID);
 		}
 
 		if (! this.currentGameData.allPlayersConnected()) return;
@@ -114,7 +115,12 @@ public class ClientGame extends ApplicationAdapter {
 		for (Player curPlayer : players) {
 			if (curPlayer.getId() == pID) continue; // dont affect current player bc the server gets all confused
 			PlayerCharacter sprite = playerToSprite.get(curPlayer.getId());
-			sprite.setGameEntity(curPlayer); // changes it game entity state
+			sprite.getGameEntity().setSpeedX(curPlayer.getSpeedX());
+			sprite.getGameEntity().setSpeedY(curPlayer.getSpeedY()); // we always change speed, just sometimes not x and y
+
+			if (curPlayer.getSpeedX() == 0 && curPlayer.getSpeedY() == 0) {
+				sprite.setGameEntity(curPlayer); // changes it game entity state
+			}
 			playerToSprite.replace(curPlayer.getId(), sprite);
 		}
 	}

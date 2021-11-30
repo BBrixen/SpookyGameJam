@@ -43,12 +43,19 @@ public class ServerGame {
 
     public void mainLoop() {
         System.out.println("beginning the game");
+        final long[] lastTime = {System.currentTimeMillis()};
+        final float[] dTime = {System.currentTimeMillis()};
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                // this is where the server will keep track of all the enemies and move them
+                dTime[0] = (System.currentTimeMillis() - lastTime[0]) / 1000f;
+                lastTime[0] = System.currentTimeMillis();
 
+                for (Player p : gameData.players) {
+                    p.updateServer(dTime[0], map);
+                    gameData.players.set(p.getId(), p);
+                }
             }
         }, 0, 10, TimeUnit.MILLISECONDS);
     }
