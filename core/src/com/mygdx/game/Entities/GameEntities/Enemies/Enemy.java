@@ -29,5 +29,4 @@ public abstract class Enemy extends Entity implements Serializable {
 
     public abstract void move();
     public abstract void attack();
-
 }

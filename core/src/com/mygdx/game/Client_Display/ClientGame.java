@@ -107,28 +107,26 @@ public class ClientGame extends ApplicationAdapter {
 		if (previousNumPlayers != numPlayers) {
 			previousNumPlayers = numPlayers;
 			// there has been a new player added, time to add things to the sprite list
-			playerToSprite = new HashMap<>();
 			for (Player player : players) {
-				if (player.getId() == pID) {
-					playerToSprite.put(pID, character);
-				} else {
-					PlayerCharacter otherCharacter = new PlayerCharacter(player.getId());
-					playerToSprite.put(player.getId(), otherCharacter);
-					stage.addActor(otherCharacter);
-				}
+				if (playerToSprite.containsKey(player.getId()) || player.getId() == pID) continue;
+
+				PlayerCharacter otherCharacter = new PlayerCharacter(player.getId());
+				playerToSprite.put(player.getId(), otherCharacter);
+				stage.addActor(otherCharacter);
 			}
 		}
 
 		if (previousNumEnemies != numEntities) {
 			previousNumEnemies = numEntities;
-			idToEntity = new HashMap<>();
 			for (Entity entity : entities) {
+				if (idToEntity.containsKey(entity.getId())) continue;
+
 				RenderableEntity renderEntity = new CucumberCharacter(entity.getId()); // make a function to determine what rendering entity to make
+				renderEntity.setGameEntity(entity);
 				idToEntity.put(entity.getId(), renderEntity);
 				stage.addActor(renderEntity);
 			}
 		}
-
 		// update the position of each sprite
 		for (Player curPlayer : players) {
 			if (curPlayer.getId() == pID) continue; // dont affect current player bc the server gets all confused
@@ -136,7 +134,7 @@ public class ClientGame extends ApplicationAdapter {
 			sprite.setGameEntity(curPlayer); // changes it game entity state
 			playerToSprite.replace(curPlayer.getId(), sprite);
 		}
-		
+
 		for (Entity entity : entities) {
 			RenderableEntity sprite = idToEntity.get(entity.getId());
 			sprite.setGameEntity(entity);

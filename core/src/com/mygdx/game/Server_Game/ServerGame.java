@@ -1,6 +1,7 @@
 package com.mygdx.game.Server_Game;
 
 import com.mygdx.game.Entities.GameEntities.Enemies.Cucumber;
+import com.mygdx.game.Entities.GameEntities.Entity;
 import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Server_Data.ServerNetworker;
@@ -57,12 +58,15 @@ public class ServerGame {
 
                 for (Player p : gameData.players) {
                     p.updateServer(dTime[0], map);
-                    gameData.players.set(p.getId(), p);
                 }
 
-                if (tick <= 10) {
+                for (Entity entity : gameData.entities) {
+                    entity.updateServer(dTime[0], map);
+                }
+
+                if (tick % 100 == 0) {
                     Cucumber cucumber = new Cucumber(tick + gameData.maxPlayers + 1);
-                    cucumber.setSpeedX(cucumber.getDefaultSpeed());
+                    cucumber.setSpeedY(cucumber.getDefaultSpeed());
                     gameData.entities.add(cucumber);
                 }
 

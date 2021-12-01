@@ -38,6 +38,7 @@ public class CollisionHandler {
         if (expectedPosition.isPassable()) {
             entity.setY(y);
         }
+
     }
 
     public static void handleCollisionsServer(float dTime, Entity entity, Map map) {
