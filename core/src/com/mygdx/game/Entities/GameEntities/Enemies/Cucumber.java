@@ -8,7 +8,16 @@ public class Cucumber extends Enemy {
 
     @Override
     public void move() {
-        // right now it will not move
+        // this will move to the center
+        int x = -1 * (int) Math.signum(this.getX());
+        int y = -1 * (int) Math.signum(this.getY());
+
+        float threshold = 10;
+        if (this.getX() < threshold && this.getX() > -threshold) x = 0;
+        if (this.getY() < threshold && this.getY() > -threshold) y = 0;
+
+        // gets the sign of its position, and negates it to get direction to middle
+        this.setSpeedVec(x, y);
     }
 
     @Override

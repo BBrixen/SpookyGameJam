@@ -6,6 +6,7 @@ import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Server_Data.ServerNetworker;
 
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ public class ServerGame {
     public GameData gameData;
     private final ServerNetworker server;
     private final boolean multiplayer;
+    private Random random;
     public Map map;
     private int tick;
 
@@ -33,6 +35,8 @@ public class ServerGame {
 
             // make map here
             map = new Map(gameData.seed, multiplayer);
+            random = new Random(gameData.seed);
+
             // we pass the state of multiplayer bc if its false then
             // we want to fun it as a client (when we would normally pass false)
 
@@ -66,7 +70,8 @@ public class ServerGame {
 
                 if (tick % 100 == 0) {
                     Cucumber cucumber = new Cucumber(tick + gameData.maxPlayers + 1);
-                    cucumber.setSpeedY(cucumber.getDefaultSpeed());
+                    cucumber.setX((random.nextFloat()-0.5f)*100);
+                    cucumber.setY((random.nextFloat()-0.5f)*100);
                     gameData.entities.add(cucumber);
                 }
 

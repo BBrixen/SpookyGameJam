@@ -27,6 +27,6 @@ public abstract class Enemy extends Entity implements Serializable {
         this.speed = defaultSpeed;
     }
 
-    public abstract void move();
-    public abstract void attack();
+    public abstract void move(); // this will set the speeds for the enemy, not actually changing its x and y
+    public abstract void attack(); // determine if it will attack or not, maybe return boolean?
 }

@@ -7,11 +7,13 @@ import java.io.Serializable;
 
 public abstract class Entity implements Serializable {
 
-    protected float x, y;
-    protected float speedX, speedY;
-    protected float defaultSpeed = 60.0f; // 64 speed should be about 1 tile per second
     protected String type;
     protected int id;
+    protected float x, y, speedX, speedY;
+
+    protected float defaultSpeed = 60.0f; // 64 speed should be about 1 tile per second
+    public static final float diagonalMultiplier =
+            (float) Math.sqrt(0.5f);
 
     public Entity(String type, int id) {
         this.x = 0;
@@ -60,6 +62,16 @@ public abstract class Entity implements Serializable {
 
     public void setSpeedY(float speedY) {
         this.speedY = speedY;
+    }
+
+    // vec is in the form [x, y]
+    public void setSpeedVec(float xMult, float yMult) {
+        if (xMult != 0 && yMult != 0) {
+            xMult *= diagonalMultiplier;
+            yMult *= diagonalMultiplier;
+        }
+        this.setSpeedX(this.getDefaultSpeed() * xMult);
+        this.setSpeedY(this.getDefaultSpeed() * yMult);
     }
 
     public float getDefaultSpeed() {
