@@ -13,7 +13,6 @@ public class InputHandler {
     // server side
     // handles the input from an actor
 
-    public static final float defaultSpeed = 120.0f; // 64 speed should be about 1 tile per second
     public static final float diagonalMultiplier =
             (float) Math.sqrt(0.5f);
     private static HashMap<Integer, Boolean> keyPresses = null;
@@ -28,7 +27,9 @@ public class InputHandler {
         if (!isKeyChange()) return;
 
         // mouse button input: Gdx.input.isButtonPressed(Input.Buttons.LEFT)
+        float defaultSpeed = p.getDefaultSpeed();
         float deltaX = 0, deltaY = 0;
+
         if (Gdx.input.isKeyPressed(Input.Keys.A))
             deltaX = -defaultSpeed;
         if (Gdx.input.isKeyPressed(Input.Keys.D))

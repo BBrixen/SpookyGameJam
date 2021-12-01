@@ -8,6 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Entities.GameEntities.Enemies.Enemy;
+import com.mygdx.game.Entities.GameEntities.Entity;
+import com.mygdx.game.Entities.RenderingEntities.CucumberCharacter;
+import com.mygdx.game.Entities.RenderingEntities.RenderableEntity;
 import com.mygdx.game.Entities.RenderingEntities.Textures;
 import com.mygdx.game.Map.Tiles.Tile;
 import com.mygdx.game.Networking.Client_Side.ClientNetworker;
@@ -32,6 +36,7 @@ public class ClientGame extends ApplicationAdapter {
 	private Stage stage;
 	private PlayerCharacter character;
 	private HashMap<Integer, PlayerCharacter> playerToSprite = new HashMap<>();
+	private HashMap<Integer, RenderableEntity> idToEntity = new HashMap<>();
 	private Music nightMusic;
 	public static Map map;
 
@@ -40,8 +45,9 @@ public class ClientGame extends ApplicationAdapter {
 	private ClientNetworker clientNetworker;
 	private GameData currentGameData;
 	private int pID = -1;
-	private int previousLength = -1;
-	
+	private int previousNumPlayers = -1;
+	private int previousNumEnemies = -1;
+
 	@Override
 	public void create () {
 		Textures.loadTextures(); // we have to load the textures before using any of them inside the map or entities
@@ -87,7 +93,9 @@ public class ClientGame extends ApplicationAdapter {
 	public void interpretGameData() {
 		if (this.currentGameData == null) return;
 		List<Player> players = currentGameData.players;
+		List<Entity> entities = currentGameData.entities;
 		int numPlayers = players.size();
+		int numEntities = entities.size();
 
 		if (pID == -1) {
 			pID = numPlayers - 1;
@@ -96,8 +104,8 @@ public class ClientGame extends ApplicationAdapter {
 
 		if (! this.currentGameData.allPlayersConnected()) return;
 
-		if (previousLength != numPlayers) {
-			previousLength = numPlayers;
+		if (previousNumPlayers != numPlayers) {
+			previousNumPlayers = numPlayers;
 			// there has been a new player added, time to add things to the sprite list
 			playerToSprite = new HashMap<>();
 			for (Player player : players) {
@@ -111,12 +119,28 @@ public class ClientGame extends ApplicationAdapter {
 			}
 		}
 
+		if (previousNumEnemies != numEntities) {
+			previousNumEnemies = numEntities;
+			idToEntity = new HashMap<>();
+			for (Entity entity : entities) {
+				RenderableEntity renderEntity = new CucumberCharacter(entity.getId()); // make a function to determine what rendering entity to make
+				idToEntity.put(entity.getId(), renderEntity);
+				stage.addActor(renderEntity);
+			}
+		}
+
 		// update the position of each sprite
 		for (Player curPlayer : players) {
 			if (curPlayer.getId() == pID) continue; // dont affect current player bc the server gets all confused
 			PlayerCharacter sprite = playerToSprite.get(curPlayer.getId());
 			sprite.setGameEntity(curPlayer); // changes it game entity state
 			playerToSprite.replace(curPlayer.getId(), sprite);
+		}
+		
+		for (Entity entity : entities) {
+			RenderableEntity sprite = idToEntity.get(entity.getId());
+			sprite.setGameEntity(entity);
+			idToEntity.replace(entity.getId(), sprite);
 		}
 	}
 

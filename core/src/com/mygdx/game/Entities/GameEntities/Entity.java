@@ -9,12 +9,17 @@ public abstract class Entity implements Serializable {
 
     protected float x, y;
     protected float speedX, speedY;
+    protected float defaultSpeed = 60.0f; // 64 speed should be about 1 tile per second
+    protected String type;
+    protected int id;
 
-    public Entity() {
+    public Entity(String type, int id) {
         this.x = 0;
         this.y = 0;
         this.speedX = 0;
         this.speedY = 0;
+        this.type = type;
+        this.id = id;
     }
 
     public void update(float dTime) {
@@ -57,4 +62,27 @@ public abstract class Entity implements Serializable {
         this.speedY = speedY;
     }
 
+    public float getDefaultSpeed() {
+        return defaultSpeed;
+    }
+
+    public void setDefaultSpeed(float defaultSpeed) {
+        this.defaultSpeed = defaultSpeed;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

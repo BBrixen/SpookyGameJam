@@ -1,5 +1,6 @@
 package com.mygdx.game.Server_Game;
 
+import com.mygdx.game.Entities.GameEntities.Enemies.Cucumber;
 import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Server_Data.ServerNetworker;
@@ -14,6 +15,7 @@ public class ServerGame {
     private final ServerNetworker server;
     private final boolean multiplayer;
     public Map map;
+    private int tick;
 
     public ServerGame(ServerNetworker server, int maxPlayers, boolean multiplayer) {
         gameData = new GameData(maxPlayers);
@@ -43,6 +45,7 @@ public class ServerGame {
 
     public void mainLoop() {
         System.out.println("beginning the game");
+        tick = 0;
         final long[] lastTime = {System.currentTimeMillis()};
         final float[] dTime = {System.currentTimeMillis()};
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -56,6 +59,14 @@ public class ServerGame {
                     p.updateServer(dTime[0], map);
                     gameData.players.set(p.getId(), p);
                 }
+
+                if (tick <= 10) {
+                    Cucumber cucumber = new Cucumber(tick + gameData.maxPlayers + 1);
+                    cucumber.setSpeedX(cucumber.getDefaultSpeed());
+                    gameData.entities.add(cucumber);
+                }
+
+                tick ++;
             }
         }, 0, 10, TimeUnit.MILLISECONDS);
     }

@@ -7,8 +7,9 @@ public class Player extends Entity implements Serializable {
     private int pID;
 
     public Player(int id) {
-        super();
+        super("player", id);
         this.pID = id;
+        this.setDefaultSpeed(120f);
     }
 
     public int getId() {
