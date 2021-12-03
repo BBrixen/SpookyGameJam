@@ -45,7 +45,7 @@ public class ClientGame extends ApplicationAdapter {
 	private GameData currentGameData;
 	private int pID = -1;
 	private int previousNumPlayers = -1;
-	private int previousNumEnemies = -1;
+	private int previousNumEntities = -1;
 
 	@Override
 	public void create () {
@@ -115,8 +115,8 @@ public class ClientGame extends ApplicationAdapter {
 			}
 		}
 
-		if (previousNumEnemies != numEntities) {
-			previousNumEnemies = numEntities;
+		if (previousNumEntities != numEntities) {
+			previousNumEntities = numEntities;
 			for (Entity entity : entities) {
 				if (idToEntity.containsKey(entity.getId())) continue;
 
