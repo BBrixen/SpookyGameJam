@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.game.Entities.GameEntities.Enemies.Enemy;
 import com.mygdx.game.Entities.GameEntities.Entity;
 import com.mygdx.game.Entities.RenderingEntities.CucumberCharacter;
 import com.mygdx.game.Entities.RenderingEntities.RenderableEntity;
@@ -35,8 +34,8 @@ public class ClientGame extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private Stage stage;
 	private PlayerCharacter character;
-	private HashMap<Integer, PlayerCharacter> playerToSprite = new HashMap<>();
-	private HashMap<Integer, RenderableEntity> idToEntity = new HashMap<>();
+	private final HashMap<Integer, PlayerCharacter> playerToSprite = new HashMap<>();
+	private final HashMap<Integer, RenderableEntity> idToEntity = new HashMap<>();
 	private Music nightMusic;
 	public static Map map;
 
@@ -99,7 +98,7 @@ public class ClientGame extends ApplicationAdapter {
 
 		if (pID == -1) {
 			pID = numPlayers - 1;
-			((Player)character.getGameEntity()).setId(pID);
+			character.getGameEntity().setId(pID);
 		}
 
 		if (! this.currentGameData.allPlayersConnected()) return;

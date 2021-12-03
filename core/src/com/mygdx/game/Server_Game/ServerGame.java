@@ -1,7 +1,6 @@
 package com.mygdx.game.Server_Game;
 
 import com.mygdx.game.Entities.GameEntities.Enemies.Cucumber;
-import com.mygdx.game.Entities.GameEntities.Enemies.Enemy;
 import com.mygdx.game.Entities.GameEntities.Entity;
 import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Map.Map;
