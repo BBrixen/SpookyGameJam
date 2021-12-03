@@ -1,11 +1,11 @@
 package com.mygdx.game.Server_Game;
 
 import com.mygdx.game.Entities.GameEntities.Enemies.Cucumber;
+import com.mygdx.game.Entities.GameEntities.Enemies.Enemy;
 import com.mygdx.game.Entities.GameEntities.Entity;
 import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Server_Data.ServerNetworker;
-
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -70,8 +70,8 @@ public class ServerGame {
 
                 if (tick % 100 == 0) {
                     Cucumber cucumber = new Cucumber(tick + gameData.maxPlayers + 1);
-                    cucumber.setX((random.nextFloat()-0.5f)*100);
-                    cucumber.setY((random.nextFloat()-0.5f)*100);
+                    cucumber.setX((random.nextFloat()-0.5f)*200);
+                    cucumber.setY((random.nextFloat()-0.5f)*200);
                     gameData.entities.add(cucumber);
                 }
 

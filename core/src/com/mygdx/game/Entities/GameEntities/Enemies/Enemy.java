@@ -1,6 +1,7 @@
 package com.mygdx.game.Entities.GameEntities.Enemies;
 
 import com.mygdx.game.Entities.GameEntities.Entity;
+import com.mygdx.game.Map.Map;
 
 import java.io.Serializable;
 
@@ -25,6 +26,18 @@ public abstract class Enemy extends Entity implements Serializable {
         this.money = money;
         this.range = range;
         this.speed = defaultSpeed;
+    }
+
+    @Override
+    public void update(float dTime) {
+        this.move();
+        super.update(dTime);
+    }
+
+    @Override
+    public void updateServer(float dTime, Map map) {
+        this.move();
+        super.updateServer(dTime, map);
     }
 
     public abstract void move(); // this will set the speeds for the enemy, not actually changing its x and y
