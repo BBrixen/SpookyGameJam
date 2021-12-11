@@ -9,11 +9,6 @@ public class ItemTile extends Tile {
     }
 
     @Override
-    public void updateType(String type) {
-
-    }
-
-    @Override
     public void render(SpriteBatch batch) {
 
     }

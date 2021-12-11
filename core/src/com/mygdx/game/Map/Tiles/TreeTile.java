@@ -5,13 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entities.RenderingEntities.Textures;
 
+import java.util.HashMap;
+
 public class TreeTile extends Tile {
 
     private Sprite background;
     private final float yoffset;
     private final boolean flipped;
 
-    public TreeTile(String type, int row, int col, boolean flipped, boolean server) {
+    public TreeTile(String type, int row, int col,
+                    boolean flipped, boolean server, HashMap<String, Texture> typeToTexture) {
         super(type, row, col);
         this.flipped = flipped;
         yoffset = 32;
@@ -24,19 +27,11 @@ public class TreeTile extends Tile {
         background.setPosition(x, y);
 
         // handles sprite too
-        updateType(type);
+        updateType(type, typeToTexture);
     }
 
-    public void updateType(String type) {
-        Texture primaryTexture = Textures.tree;
-        switch (type) {
-            case "tree2":
-                primaryTexture = Textures.tree2;
-                break;
-            case "tree3":
-                primaryTexture = Textures.tree3;
-                break;
-        }
+    public void updateType(String type, HashMap<String, Texture> typeToTexture) {
+        Texture primaryTexture = typeToTexture.get(type);
         sprite = new Sprite(primaryTexture);
         sprite.setScale(primaryScale);
         sprite.setPosition(x, y + yoffset);

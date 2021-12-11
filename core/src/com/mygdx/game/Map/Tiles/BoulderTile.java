@@ -28,11 +28,6 @@ public class BoulderTile extends Tile {
     }
 
     @Override
-    public void updateType(String type) {
-        // empty bc boulder cannot have different type
-    }
-
-    @Override
     public void render(SpriteBatch batch) {
         // renders the primary and secondary texture, if there are any
         if (sprite == null) return; // texture not implemented yet

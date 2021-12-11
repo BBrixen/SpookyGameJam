@@ -120,7 +120,7 @@ public class ClientGame extends ApplicationAdapter {
 			for (Entity entity : entities) {
 				if (idToEntity.containsKey(entity.getId())) continue;
 
-				RenderableEntity renderEntity = new CucumberCharacter(entity.getId()); // make a function to determine what rendering entity to make
+				RenderableEntity renderEntity = determineEntity(entity);
 				renderEntity.setGameEntity(entity);
 				idToEntity.put(entity.getId(), renderEntity);
 				stage.addActor(renderEntity);
@@ -164,7 +164,16 @@ public class ClientGame extends ApplicationAdapter {
 		stage.draw();
 	}
 
-	public void renderMap() {
+	// takes an entity and returns the corresponding type of renderable entity
+	private RenderableEntity determineEntity(Entity entity) {
+		switch (entity.getType()) {
+			case "cucumber":
+				return new CucumberCharacter(entity.getId());
+		}
+		return new CucumberCharacter(entity.getId()); // the cucumber will be the default for now
+	}
+
+	private void renderMap() {
 		if (map == null) return;
 
 		int row = Map.playerYToMapRow(character.getGameEntity().getY());

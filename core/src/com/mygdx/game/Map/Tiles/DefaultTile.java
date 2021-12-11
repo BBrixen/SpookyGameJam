@@ -3,7 +3,8 @@ package com.mygdx.game.Map.Tiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Entities.RenderingEntities.Textures;
+
+import java.util.HashMap;
 
 public class DefaultTile extends Tile {
 
@@ -11,30 +12,16 @@ public class DefaultTile extends Tile {
      * This creates a map tile, this is mostly to help with map rendering and sanity.
      * Default Tile represents dirt, grass, cobble
      */
-    public DefaultTile(String type, int row, int col, boolean server) {
+    public DefaultTile(String type, int row, int col,
+                       boolean server, HashMap<String, Texture> typeToTexture) {
         super(type, row, col);
         if (server) return; // we dont want to create a sprite on the server side
-        updateType(type);
+        updateType(type, typeToTexture);
     }
 
-    public void updateType(String type) {
+    public void updateType(String type, HashMap<String, Texture> typeToTexture) {
         // handling all the different types of tiles
-        Texture primaryTexture = Textures.grass;
-        this.type = type;
-        switch (type) {
-            case "dirt":
-                primaryTexture = Textures.dirt;
-                break;
-            case "cobble":
-                primaryTexture = Textures.cobble;
-                break;
-            case "manmadeCobble":
-                primaryTexture = Textures.manmadeCobble;
-                break;
-            case "wood":
-                primaryTexture = Textures.wood;
-                break;
-        }
+        Texture primaryTexture = typeToTexture.get(type);
         sprite = new Sprite(primaryTexture);
         sprite.setScale(primaryScale);
         sprite.setPosition(x, y);

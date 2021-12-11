@@ -23,7 +23,5 @@ public abstract class Tile {
         return passable;
     }
 
-    public abstract void updateType(String type);
-
     public abstract void render(SpriteBatch batch);
 }

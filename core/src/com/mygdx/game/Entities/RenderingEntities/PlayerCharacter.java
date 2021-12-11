@@ -1,6 +1,7 @@
 package com.mygdx.game.Entities.RenderingEntities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Entities.GameEntities.Player;
 
@@ -18,6 +19,11 @@ public class PlayerCharacter extends RenderableEntity {
     public PlayerCharacter(int pID, OrthographicCamera camera) {
         this(pID);
         this.camera = camera;
+    }
+
+    @Override
+    public void draw(Batch batch, float alpha) {
+        super.draw(batch, ((Player) this.gameEntity).getHealth() / 100.0f);
     }
 
     @Override
