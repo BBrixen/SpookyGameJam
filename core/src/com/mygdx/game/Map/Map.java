@@ -7,6 +7,7 @@ import javafx.util.Pair;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.Math;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class Map {
@@ -42,27 +43,61 @@ public class Map {
         virus(100, 1f,0.1f,"cobble");
         virus(50, 1f, 0.2f, "boulder");
 
-        generatePremade("../src/com/mygdx/game/Map/maze.txt");
-        generatePremade("../src/com/mygdx/game/Map/town.txt");
+        generatePremade("../src/com/mygdx/game/Map/PremadeStructures/maze.txt");
+        generatePremade("../src/com/mygdx/game/Map/PremadeStructures/town.txt");
     }
 
+    /**
+     * This function modifies the two hashmaps given so we can use constant lookup time to get the correct map texture
+     * this reads the lookup files and creates mappings between the following:
+     * letter - type
+     * type - texture
+     *
+     * for type - texture we need to use fields to access the static declared fields of Texutures
+     * essentially, if we pass "wood" as a line in the file, we should get the value of Textures.wood
+     *
+     * examples of text file inputs:
+     * letter - type:
+     * G grass
+     * D dirt
+     * i item
+     * I item
+     *
+     * type - texture:
+     * grass
+     * dirt
+     * cobble
+     * manmadeCobble
+     */
     private void initMaps(HashMap<String, Texture> typeToTexture, HashMap<Character, String> charToType) {
-        typeToTexture.put("grass", Textures.grass);
-        typeToTexture.put("dirt", Textures.dirt);
-        typeToTexture.put("cobble", Textures.cobble);
-        typeToTexture.put("manmadeCobble", Textures.manmadeCobble);
-        typeToTexture.put("wood", Textures.wood);
-        typeToTexture.put("tree1", Textures.tree);
-        typeToTexture.put("tree2", Textures.tree2);
-        typeToTexture.put("tree3", Textures.tree3);
+        try {
+            // getting static class as class object
+            Class<?> textureClass = Class.forName("com.mygdx.game.Entities.RenderingEntities.Textures");
+            File textureLookupFile = new File("../src/com/mygdx/game/Map/texture_lookup");
+            Scanner textureLookupScanner = new Scanner(textureLookupFile);
 
-        charToType.put('B', "boulder");
-        charToType.put('D', "dirt");
-        charToType.put('C', "manmadeCobble");
-        charToType.put('G', "grass");
-        charToType.put('W', "wood");
-        charToType.put('i', "item");
-        charToType.put('I', "item");
+            while (textureLookupScanner.hasNextLine()) {
+                // on each line, get the name
+                String textureName = textureLookupScanner.nextLine();
+                Field f = textureClass.getDeclaredField(textureName); // get the static variable
+                Texture value = (Texture) f.get(textureClass); // get the value from the Texures class
+                typeToTexture.put(textureName, value); // add to hashmap
+            }
+        } catch (FileNotFoundException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            File typeLookupFile = new File("../src/com/mygdx/game/Map/type_lookup");
+            Scanner typeLookupScanner = new Scanner(typeLookupFile);
+            while (typeLookupScanner.hasNextLine()) {
+                String[] line = typeLookupScanner.nextLine().split(" "); // split by spaces
+                char c = line[0].toCharArray()[0]; // get the character
+                charToType.put(c, line[1]); // map character to type
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static int playerYToMapRow(float pos) {

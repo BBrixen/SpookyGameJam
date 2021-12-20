@@ -75,12 +75,12 @@ public class ServerGame {
                 // -------------------------------------
 
                 // spawning enemies randomly
-                if (tick % 100 == 0) {
-                    Cucumber cucumber = new Cucumber(tick + gameData.maxPlayers + 1);
-                    cucumber.setX((random.nextFloat()-0.5f)*200);
-                    cucumber.setY((random.nextFloat()-0.5f)*200);
-                    gameData.entities.add(cucumber);
-                }
+//                if (tick % 100 == 0) {
+//                    Cucumber cucumber = new Cucumber(tick + gameData.maxPlayers + 1);
+//                    cucumber.setX((random.nextFloat()-0.5f)*200);
+//                    cucumber.setY((random.nextFloat()-0.5f)*200);
+//                    gameData.entities.add(cucumber);
+//                }
 
                 // increase tick counter at end of cycle, this keeps track of time in the game
                 tick ++;
