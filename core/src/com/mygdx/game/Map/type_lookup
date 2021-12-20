@@ -3,5 +3,6 @@ D dirt
 C manmadeCobble
 G grass
 W wood
-i item
-I item
+i item_wizard
+I item_wizard
+w item_wizard

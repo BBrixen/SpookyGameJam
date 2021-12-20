@@ -172,7 +172,7 @@ public class Map {
     private Tile determineTile(String type, int row, int col) {
         // takes type and returns a new tile object with needed type
         if (type.equals("boulder") || type.equals("B")) return new BoulderTile(type, row, col, isServer);
-        if (type.equals("item") || type.equals("i")) return new ItemTile(type, row, col);
+        if (type.startsWith("item")) return new ItemTile(type, row, col, isServer, typeToTexture);
 
         if (type.equals("forest")) {
             float treeTypeRandomizer = random.nextFloat();
@@ -188,7 +188,6 @@ public class Map {
     }
 
     private void generatePremade (String path) {
-        System.out.println("starting premade on " + path);
         ArrayList<char[]> premadeList = new ArrayList<>(); // MAKES THE PREMADE MEGA LIST
 
         try {
@@ -208,6 +207,8 @@ public class Map {
         //gets some random coords to start the maze at
         int startingX = Math.round(random.nextFloat() * (size));
         int startingY = Math.round(random.nextFloat() * (size));
+        startingY = 250;
+        startingX = 250;
 
         //loops until it finds a valid spot for the premade
         while (startingX-premadeList.get(1).length < 0 || premadeList.get(1).length+startingX > size
