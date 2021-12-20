@@ -12,6 +12,7 @@ public class CollisionHandler {
      * Modifies playerentity to not run into an impassable object
      */
     public static void handleCollisions(float dTime, Entity entity) {
+        if (ClientGame.map == null) return;
         handleCollisionsServer(dTime, entity, ClientGame.map);
     }
 

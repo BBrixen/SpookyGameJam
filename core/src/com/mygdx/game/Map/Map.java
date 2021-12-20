@@ -16,16 +16,22 @@ public class Map {
     private final Random random;
     public static final int size = 500;
     private final boolean isServer;
+
+    // currently we are storing everything in memory
+    // if things get big we might have to make functions to look them up instead of memory
     private final HashMap<String, Texture> typeToTexture;
     private final HashMap<Character, String> charToType;
+    private final List<String> itemTypes;
 
     public Map(long seed, boolean server) {
         // before we create the map we need to make hashmaps of types to textures
         isServer = server;
         if (server) Textures.loadTextures();
+
         typeToTexture = new HashMap<>();
         charToType = new HashMap<>();
-        initMaps(typeToTexture, charToType);
+        itemTypes = new ArrayList<>();
+        initMaps(typeToTexture, charToType, itemTypes);
 
         //makes the map size by size char wide
         SML = new ArrayList<>();
@@ -69,7 +75,8 @@ public class Map {
      * cobble
      * manmadeCobble
      */
-    private void initMaps(HashMap<String, Texture> typeToTexture, HashMap<Character, String> charToType) {
+    private void initMaps(HashMap<String, Texture> typeToTexture, HashMap<Character, String> charToType,
+                          List<String> itemTypes) {
         try {
             // getting static class as class object
             Class<?> textureClass = Class.forName("com.mygdx.game.Entities.RenderingEntities.Textures");
@@ -82,6 +89,11 @@ public class Map {
                 Field f = textureClass.getDeclaredField(textureName); // get the static variable
                 Texture value = (Texture) f.get(textureClass); // get the value from the Texures class
                 typeToTexture.put(textureName, value); // add to hashmap
+
+                if (textureName.startsWith("item")) {
+                    itemTypes.add(textureName); // all the item types are stored in this file already,
+                    // so parse them into their own list
+                }
             }
         } catch (FileNotFoundException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -172,7 +184,12 @@ public class Map {
     private Tile determineTile(String type, int row, int col) {
         // takes type and returns a new tile object with needed type
         if (type.equals("boulder") || type.equals("B")) return new BoulderTile(type, row, col, isServer);
-        if (type.startsWith("item")) return new ItemTile(type, row, col, isServer, typeToTexture);
+
+        if (type.startsWith("item")) {
+            int index = (int) (random.nextFloat() * itemTypes.size());
+            String itemType = itemTypes.get(index);
+            return new ItemTile(itemType, row, col, isServer, typeToTexture);
+        }
 
         if (type.equals("forest")) {
             float treeTypeRandomizer = random.nextFloat();
