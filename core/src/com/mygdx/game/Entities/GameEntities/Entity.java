@@ -10,6 +10,7 @@ public abstract class Entity implements Serializable {
     protected String type;
     protected int id;
     protected float x, y, speedX, speedY;
+    protected float damage;
 
     protected float defaultSpeed = 60.0f; // 64 speed should be about 1 tile per second
     public static final float diagonalMultiplier =
@@ -22,6 +23,7 @@ public abstract class Entity implements Serializable {
         this.speedY = 0;
         this.type = type;
         this.id = id;
+        this.damage = 0;
     }
 
     public void update(float dTime) {
@@ -96,6 +98,14 @@ public abstract class Entity implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
     }
 
     @Override

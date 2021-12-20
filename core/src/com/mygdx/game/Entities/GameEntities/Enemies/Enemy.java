@@ -11,19 +11,17 @@ public abstract class Enemy extends Entity implements Serializable {
     //range can be used for both melee and ranged attacks
 
 
-    public Enemy(String type, int id, int health, int money, float range, float speed) {
-        super(type, id);
-        this.health = health;
-        this.money = money;
+    public Enemy(String type, int id, int health, int money, float range, float damage, float speed) {
+        this(type, id, health, money, range, damage);
         this.speed = speed;
-        this.range = range;
     }
 
-    public Enemy(String type, int id, int health, int money, float range) {
+    public Enemy(String type, int id, int health, int money, float range, float damage) {
         super(type, id);
         this.health = health;
         this.money = money;
         this.range = range;
+        this.damage = damage;
         this.speed = defaultSpeed;
     }
 
@@ -41,4 +39,12 @@ public abstract class Enemy extends Entity implements Serializable {
 
     public abstract void move(); // this will set the speeds for the enemy, not actually changing its x and y
     public abstract void attack(); // determine if it will attack or not, maybe return boolean?
+
+    public float getRange() {
+        return range;
+    }
+
+    public void setRange(float range) {
+        this.range = range;
+    }
 }

@@ -23,7 +23,8 @@ public class PlayerCharacter extends RenderableEntity {
 
     @Override
     public void draw(Batch batch, float alpha) {
-        super.draw(batch, ((Player) this.gameEntity).getHealth() / 100.0f);
+        Player tempPlayer = (Player) this.gameEntity;
+        super.draw(batch, tempPlayer.getHealth() / tempPlayer.getMaxHealth());
     }
 
     @Override

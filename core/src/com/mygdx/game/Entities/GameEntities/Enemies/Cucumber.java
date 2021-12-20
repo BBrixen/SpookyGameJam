@@ -3,7 +3,7 @@ package com.mygdx.game.Entities.GameEntities.Enemies;
 public class Cucumber extends Enemy {
 
     public Cucumber(int id) {
-        super("cucumber", id, 100, 10, 1f);
+        super("cucumber", id, 100, 10, 64f, 1);
     }
 
     @Override

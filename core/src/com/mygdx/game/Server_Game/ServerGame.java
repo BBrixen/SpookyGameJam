@@ -1,6 +1,8 @@
 package com.mygdx.game.Server_Game;
 
+import com.badlogic.gdx.math.Circle;
 import com.mygdx.game.Entities.GameEntities.Enemies.Cucumber;
+import com.mygdx.game.Entities.GameEntities.Enemies.Enemy;
 import com.mygdx.game.Entities.GameEntities.Entity;
 import com.mygdx.game.Entities.GameEntities.Player;
 import com.mygdx.game.Map.Map;
@@ -56,6 +58,8 @@ public class ServerGame {
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                // -------------------------------------
+                // updating the current state of the game
                 dTime[0] = (System.currentTimeMillis() - lastTime[0]) / 1000f;
                 lastTime[0] = System.currentTimeMillis();
 
@@ -67,6 +71,11 @@ public class ServerGame {
                     entity.updateServer(dTime[0], map);
                 }
 
+                handleDamage(gameData);
+                // done updating basic things
+                // -------------------------------------
+
+                // spawning enemies randomly
                 if (tick % 100 == 0) {
                     Cucumber cucumber = new Cucumber(tick + gameData.maxPlayers + 1);
                     cucumber.setX((random.nextFloat()-0.5f)*200);
@@ -74,8 +83,29 @@ public class ServerGame {
                     gameData.entities.add(cucumber);
                 }
 
+                // increase tick counter at end of cycle, this keeps track of time in the game
                 tick ++;
             }
         }, 0, 10, TimeUnit.MILLISECONDS);
+    }
+
+    private void handleDamage(GameData data) {
+        for (Entity entity : gameData.entities) {
+            if (entity.getDamage() == 0) continue;
+            if (entity instanceof Enemy) {
+                Enemy enemy = (Enemy) entity; // cast it to an enemy so we can access its range
+
+                for (Player p : gameData.players) {
+                    float dist = Math.abs(p.getX() - enemy.getX()) + Math.abs(p.getY() - enemy.getY());
+                    if (dist <= enemy.getRange()) {
+                        // player is within range, inflict damage
+                        p.takeDamage(enemy.getDamage());
+                        // TODO possibly add some boolean so that a player does not take damage from
+                        //  multiple enemies in the same turn, because that can just insta kill someone
+                    }
+                }
+
+            }
+        }
     }
 }
