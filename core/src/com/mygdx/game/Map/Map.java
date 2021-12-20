@@ -16,8 +16,8 @@ public class Map {
     private final Random random;
     public static final int size = 500;
     private final boolean isServer;
-    private HashMap<String, Texture> typeToTexture;
-    private HashMap<Character, String> charToType;
+    private final HashMap<String, Texture> typeToTexture;
+    private final HashMap<Character, String> charToType;
 
     public Map(long seed, boolean server) {
         // before we create the map we need to make hashmaps of types to textures
