@@ -1,6 +1,5 @@
 package com.mygdx.game.Server_Game;
 
-import com.badlogic.gdx.math.Circle;
 import com.mygdx.game.Entities.GameEntities.Enemies.Cucumber;
 import com.mygdx.game.Entities.GameEntities.Enemies.Enemy;
 import com.mygdx.game.Entities.GameEntities.Entity;
