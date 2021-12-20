@@ -31,6 +31,14 @@ public class ItemTile extends Tile {
         sprite.setPosition(x, y);
     }
 
+    public boolean isCollected() {
+        return collected;
+    }
+
+    public void setCollected(boolean collected) {
+        this.collected = collected;
+    }
+
     @Override
     public void render(SpriteBatch batch) {
         if (sprite == null) return; // texture not implemented yet
@@ -38,5 +46,12 @@ public class ItemTile extends Tile {
         background.draw(batch);
         if (!collected) // only render if it hasnt been collected yet
             sprite.draw(batch);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemTile{" +
+                "collected=" + collected +
+                '}';
     }
 }
