@@ -70,7 +70,7 @@ public class ServerGame {
                     entity.updateServer(dTime[0], map);
                 }
 
-                handleDamage(gameData);
+                handleDamage();
                 // done updating basic things
                 // -------------------------------------
 
@@ -88,7 +88,7 @@ public class ServerGame {
         }, 0, 10, TimeUnit.MILLISECONDS);
     }
 
-    private void handleDamage(GameData data) {
+    private void handleDamage() {
         for (Entity entity : gameData.entities) {
             if (entity.getDamage() == 0) continue;
             if (entity instanceof Enemy) {
