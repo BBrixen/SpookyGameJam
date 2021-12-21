@@ -21,7 +21,7 @@ public class Map {
     // if things get big we might have to make functions to look them up instead of memory
     private final HashMap<String, Texture> typeToTexture;
     private final HashMap<Character, String> charToType;
-    private final List<String> itemTypes;
+    private final List<String> itemTypes, classTypes;
 
     public Map(long seed, boolean server) {
         // before we create the map we need to make hashmaps of types to textures
@@ -31,7 +31,8 @@ public class Map {
         typeToTexture = new HashMap<>();
         charToType = new HashMap<>();
         itemTypes = new ArrayList<>();
-        initMaps(typeToTexture, charToType, itemTypes);
+        classTypes = new ArrayList<>();
+        initMaps(typeToTexture, charToType, itemTypes, classTypes);
 
         //makes the map size by size char wide
         SML = new ArrayList<>();
@@ -76,7 +77,7 @@ public class Map {
      * manmadeCobble
      */
     private void initMaps(HashMap<String, Texture> typeToTexture, HashMap<Character, String> charToType,
-                          List<String> itemTypes) {
+                          List<String> itemTypes, List<String> classTypes) {
         try {
             // getting static class as class object
             Class<?> textureClass = Class.forName("com.mygdx.game.Entities.RenderingEntities.Textures");
@@ -93,6 +94,8 @@ public class Map {
                 if (textureName.startsWith("item")) {
                     itemTypes.add(textureName); // all the item types are stored in this file already,
                     // so parse them into their own list
+                } else if (textureName.startsWith("Item")) {
+                    classTypes.add(textureName);
                 }
             }
         } catch (FileNotFoundException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
@@ -188,6 +191,12 @@ public class Map {
         if (type.startsWith("item")) {
             int index = (int) (random.nextFloat() * itemTypes.size());
             String itemType = itemTypes.get(index);
+            return new ItemTile(itemType, row, col, isServer, typeToTexture);
+        }
+
+        if (type.startsWith("Item")) {
+            int index = (int) (random.nextFloat() * classTypes.size());
+            String itemType = classTypes.get(index);
             return new ItemTile(itemType, row, col, isServer, typeToTexture);
         }
 

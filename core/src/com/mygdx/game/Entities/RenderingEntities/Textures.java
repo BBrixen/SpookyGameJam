@@ -12,7 +12,10 @@ public class Textures {
     public static Texture player, cucumber;
 
     // item textures
-    public static Texture item_wizard, item_strategist, item_ninja, item_priest, item_fighter;
+    // these are class orb items
+    public static Texture Item_wizard, Item_strategist, Item_ninja, Item_priest, Item_fighter;
+    // these are other, less important items
+    public static Texture item_coin, item_fish, item_milk;
 
     public static void loadTextures() {
         try {
@@ -32,11 +35,15 @@ public class Textures {
             cucumber = new Texture(Gdx.files.internal("Sprites/Enemies/cucumber.png"));
 
             // items
-            item_wizard = new Texture(Gdx.files.internal("Sprites/Items/item_wizard.png"));
-            item_strategist = new Texture(Gdx.files.internal("Sprites/Items/item_strategist.png"));
-            item_ninja = new Texture(Gdx.files.internal("Sprites/Items/item_ninja.png"));
-            item_priest = new Texture(Gdx.files.internal("Sprites/Items/item_priest.png"));
-            item_fighter = new Texture(Gdx.files.internal("Sprites/Items/item_fighter.png"));
+            Item_wizard = new Texture(Gdx.files.internal("Sprites/Items/item_wizard.png"));
+            Item_strategist = new Texture(Gdx.files.internal("Sprites/Items/item_strategist.png"));
+            Item_ninja = new Texture(Gdx.files.internal("Sprites/Items/item_ninja.png"));
+            Item_priest = new Texture(Gdx.files.internal("Sprites/Items/item_priest.png"));
+            Item_fighter = new Texture(Gdx.files.internal("Sprites/Items/item_fighter.png"));
+
+            item_coin = new Texture(Gdx.files.internal("Sprites/Items/item_coin.png"));
+            item_fish = new Texture(Gdx.files.internal("Sprites/Items/item_fish.png"));
+            item_milk = new Texture(Gdx.files.internal("Sprites/Items/item_milk.png"));
         } catch (NullPointerException e) {
             System.out.println("the server failed to initialize the textures");
         }

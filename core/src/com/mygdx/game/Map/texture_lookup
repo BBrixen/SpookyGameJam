@@ -7,8 +7,11 @@ boulder
 tree1
 tree2
 tree3
-item_wizard
-item_strategist
-item_ninja
-item_priest
-item_fighter
+Item_wizard
+Item_strategist
+Item_ninja
+Item_priest
+Item_fighter
+item_coin
+item_fish
+item_milk
