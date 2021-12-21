@@ -23,7 +23,7 @@ public class CollisionHandler {
 
         if (entity.getType().equals("player")) {
             Tile currentPosition = map.SML.get(rowBefore).get(colBefore);
-            if (currentPosition.getType().startsWith("item"))
+            if (currentPosition.getType().startsWith("item") || currentPosition.getType().startsWith("Item"))
                 ((ItemTile) currentPosition).setCollected(true);
         }
 
